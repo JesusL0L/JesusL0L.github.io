@@ -1,0 +1,872 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Уголок творчества художницы JesusArtt. Здесь вы найдете ссылки на мои соцсети, правила заказа артов и информацию о доступе в эксклюзивный контент.">
+    <title>Уголок художницы JesusArtt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Comfortaa&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color-1: #feb3a6;
+            --bg-color-2: #f88487;
+            --bg-color-3: #f9a79b;
+            --card-bg: rgba(255, 255, 255, 0.97);
+            --card-border-color: #ffffff;
+            --text-color: #5D4037;
+            --text-muted: #795548;
+            --accent-color-1: #ff9c85;
+            --accent-color-2: #f88487;
+            --shadow-color: rgba(248, 132, 135, 0.4);
+            --shadow-hover-color: rgba(248, 132, 135, 0.6);
+            --dropdown-bg: #fff0f2;
+            --dropdown-hover: #ffdde4;
+            --nsfw-bg: #ff6b6b;
+            --copied-bg: #a5d6a7;
+            --tab-border: #ffc6bd;
+            --shape-bg: rgba(255, 255, 255, 0.15);
+            --focus-glow: 0 0 0 3px rgba(248, 132, 135, 0.5);
+            --ease-main: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-ripple: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        body.dark-theme {
+            --card-bg: rgba(40, 40, 40, 0.97);
+            --card-border-color: #444;
+            --text-color: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --accent-color-1: #6d5b7b;
+            --accent-color-2: #c06c84;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --shadow-hover-color: rgba(0, 0, 0, 0.6);
+            --dropdown-bg: #3a3a3a;
+            --dropdown-hover: #4a4a4a;
+            --tab-border: #555;
+            --shape-bg: rgba(255, 255, 255, 0.05);
+            --focus-glow: 0 0 0 3px rgba(192, 108, 132, 0.6);
+        }
+        @keyframes cardFadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes contentFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 20%; }
+            50% { opacity: 0.5; border-radius: 50%; }
+            100% { transform: translateY(-110vh) rotate(720deg); opacity: 0; border-radius: 20%; }
+        }
+        @keyframes tab-content-enter {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes tab-content-leave {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-15px) scale(0.98);
+            }
+        }
+        @keyframes dialog-fade-in {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes dialog-fade-out {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        @keyframes backdrop-fade-in {
+            from {
+                background-color: rgba(0, 0, 0, 0);
+                backdrop-filter: blur(0px);
+            }
+            to {
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+            }
+        }
+        @keyframes backdrop-fade-out {
+            from {
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+            }
+            to {
+                background-color: rgba(0, 0, 0, 0);
+                backdrop-filter: blur(0px);
+            }
+        }
+        @keyframes text-swap-animation {
+            0%   { transform: translateY(0); opacity: 1; }
+            49%  { transform: translateY(-10px); opacity: 0; }
+            50%  { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Comfortaa', cursive;
+            color: var(--text-color);
+            background: linear-gradient(-45deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), var(--bg-color-1));
+            background-size: 400% 400%;
+            animation: gradient-animation 25s ease infinite;
+            transition: color 0.5s var(--ease-main);
+            position: relative;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(-45deg, #434343, #282828, #121212, #434343);
+            background-size: 400% 400%;
+            animation: gradient-animation 25s ease infinite;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.8s var(--ease-main);
+            pointer-events: none;
+        }
+        body.dark-theme::after {
+            opacity: 1;
+        }
+        #background-animation {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .shape {
+            position: absolute;
+            display: block;
+            list-style: none;
+            background: var(--shape-bg);
+            animation: float 25s linear infinite;
+            bottom: -150px;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            max-height: calc(100vh - 40px);
+            padding: 30px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--card-border-color);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px var(--shadow-color);
+            text-align: center;
+            perspective: 1000px;
+            animation: cardFadeInUp 0.8s var(--ease-main) both;
+            transition: all 0.4s var(--ease-main);
+        }
+        h1, .subtitle, .tabs, .tab-content-wrapper {
+            animation: contentFadeIn 0.6s var(--ease-main) both;
+        }
+        h1 { animation-delay: 0.2s; }
+        .subtitle { animation-delay: 0.3s; }
+        .tabs { animation-delay: 0.4s; }
+        .tab-content-wrapper { animation-delay: 0.5s; }
+        h1 {
+            margin: 0;
+            font-family: 'Caveat', cursive;
+            font-size: 3.5em;
+            color: var(--accent-color-2);
+            transition: text-shadow 0.3s var(--ease-main), color 0.5s var(--ease-main);
+        }
+        h1:hover {
+            text-shadow: 0 0 10px var(--shadow-color);
+        }
+        .subtitle {
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-style: italic;
+            transition: color 0.5s var(--ease-main);
+        }
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            z-index: 10;
+            padding: 5px;
+            background: none;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s var(--ease-main), transform 0.4s var(--ease-pop);
+        }
+        .theme-switcher:hover {
+            background-color: var(--dropdown-bg);
+            transform: rotate(15deg);
+        }
+        .theme-switcher:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-glow);
+        }
+        .theme-switcher svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-muted);
+            stroke: var(--text-muted);
+            transition: color 0.3s var(--ease-main), stroke 0.3s var(--ease-main);
+        }
+        .moon-icon { display: none; }
+        body.dark-theme .sun-icon { display: none; }
+        body.dark-theme .moon-icon { display: block; }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--tab-border);
+            transition: border-color 0.5s var(--ease-main);
+        }
+        .tab-btn {
+            position: relative;
+            padding: 10px 15px;
+            background-color: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-family: 'Comfortaa', cursive;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-main);
+            overflow: hidden;
+        }
+        .tab-btn.active {
+            background-color: var(--accent-color-1);
+            color: var(--text-color);
+        }
+        .tab-btn:not(.active):hover {
+            background-color: var(--dropdown-bg);
+            transform: translateY(-2px);
+        }
+        .tab-btn:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-glow);
+        }
+        .tab-content-wrapper {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-gutter: stable;
+            transition: height 0.4s var(--ease-main);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color-1) var(--dropdown-bg);
+        }
+        .tab-content-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+        .tab-content-wrapper::-webkit-scrollbar-track {
+            background: var(--dropdown-bg);
+            border-radius: 10px;
+        }
+        .tab-content-wrapper::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color-1);
+            border-radius: 10px;
+            border: 2px solid var(--dropdown-bg);
+            transition: background-color 0.3s var(--ease-main);
+        }
+        .tab-content-wrapper::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-color-2);
+        }
+        .tab-content {
+            display: none;
+            text-align: left;
+        }
+        .tab-content.active {
+            display: block;
+            animation: tab-content-enter 0.4s var(--ease-main) forwards;
+        }
+        .tab-content.exiting {
+            display: block;
+            position: absolute;
+            inset: 0;
+            animation: tab-content-leave 0.4s var(--ease-main) forwards;
+        }
+        .tab-content h2 {
+            margin-top: 0;
+            color: var(--accent-color-2);
+            text-align: center;
+            transition: color 0.5s var(--ease-main);
+        }
+        .tab-content p, .tab-content li { line-height: 1.7; }
+        .tab-content ol, .tab-content ul { padding-inline-start: 25px; }
+        .tab-content strong { color: var(--text-color); transition: color 0.5s var(--ease-main); }
+        .tab-content .link-button { margin-top: 20px; }
+        .divider {
+            border: 0;
+            height: 2px;
+            background-color: var(--tab-border);
+            margin: 25px auto;
+            width: 80%;
+            transition: background-color 0.5s var(--ease-main);
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        .link-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            gap: 12px;
+            padding: 15px;
+            background-color: var(--accent-color-1);
+            color: var(--text-color);
+            border: none;
+            border-radius: 15px;
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s var(--ease-main);
+            overflow: hidden;
+        }
+        .link-button svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            fill: currentColor;
+            transition: transform 0.3s var(--ease-main);
+            z-index: 2;
+        }
+        .link-button span { z-index: 2; }
+        .link-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px -5px var(--shadow-hover-color);
+        }
+        .link-button:hover svg {
+            transform: rotate(5deg) scale(1.1);
+        }
+        .link-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px -2px var(--shadow-color);
+        }
+        .tab-btn:active, .theme-switcher:active, .dialog-header button:active {
+            transform: scale(0.97);
+            transition: transform 0.1s var(--ease-main);
+        }
+        .link-button:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-glow);
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: var(--accent-color-2);
+            opacity: 0.4;
+            transform: scale(0);
+            animation: ripple-effect 0.7s var(--ease-ripple);
+            pointer-events: none;
+            z-index: 1;
+        }
+        #donate-btn {
+            background-color: var(--accent-color-2);
+        }
+        #donate-btn.copied {
+            background-color: var(--copied-bg);
+            color: #fff;
+            animation: none;
+        }
+        #donate-btn.is-swapping span {
+            animation: text-swap-animation 0.4s var(--ease-main);
+        }
+        .nsfw-badge {
+            background-color: var(--nsfw-bg);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 7px;
+            font-size: 0.8em;
+            vertical-align: middle;
+            margin-inline-start: 5px;
+        }
+        .notice-box {
+            background-color: var(--dropdown-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border-inline-start: 4px solid var(--accent-color-2);
+            transition: background-color 0.5s var(--ease-main), border-color 0.5s var(--ease-main);
+        }
+        .notice-box p {
+            font-size: 0.9em;
+            margin-block: 0.5em;
+        }
+        .notice-box p:first-child { margin-block-start: 0; }
+        .notice-box p:last-child { margin-block-end: 0; }
+        .inline-link {
+            color: var(--accent-color-2);
+            text-decoration: none;
+            font-weight: bold;
+            transition: text-shadow 0.2s var(--ease-main), color 0.5s var(--ease-main);
+        }
+        .inline-link:hover {
+            text-shadow: 0 0 5px var(--shadow-color);
+        }
+        .inline-link:focus-visible {
+            outline: 2px solid var(--accent-color-2);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+        dialog {
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border: 2px solid var(--card-border-color);
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        dialog[open] {
+            animation: dialog-fade-in 0.4s var(--ease-pop);
+        }
+        dialog.closing {
+            animation: dialog-fade-out 0.25s var(--ease-main) forwards;
+        }
+        dialog::backdrop {
+            background-color: transparent;
+        }
+        dialog[open]::backdrop {
+            animation: backdrop-fade-in 0.4s var(--ease-main) forwards;
+        }
+        dialog.closing::backdrop {
+            animation: backdrop-fade-out 0.25s var(--ease-main) forwards;
+        }
+        .dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dialog-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--accent-color-2);
+        }
+        .dialog-header button {
+            background: none;
+            border: none;
+            font-size: 2em;
+            line-height: 1;
+            padding: 0 5px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s var(--ease-main), transform 0.3s var(--ease-pop);
+        }
+        .dialog-header button:hover {
+            color: var(--accent-color-2);
+            transform: scale(1.1);
+        }
+        .dialog-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        @media (max-width: 640px) {
+            .card { padding: 20px; }
+            h1 { font-size: 3em; }
+            .subtitle { font-size: 1em; margin-bottom: 20px; }
+            .tabs { gap: 5px; padding-bottom: 10px; margin-bottom: 20px; }
+            .tab-btn { padding: 8px 10px; font-size: 0.9em; }
+            .link-button { padding: 12px; font-size: 1em; }
+            dialog { padding: 20px; }
+            .dialog-header h2 { font-size: 1.3em; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+                transition-delay: 0s !important;
+                animation-delay: 0s !important;
+            }
+            @keyframes cardFadeInUp { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes contentFadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes tab-content-enter { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes tab-content-leave { from { opacity: 1; } to { opacity: 0; } }
+            @keyframes dialog-fade-in { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes dialog-fade-out { from { opacity: 1; } to { opacity: 0; } }
+            @keyframes backdrop-fade-in { from { backdrop-filter: blur(0px); } to { backdrop-filter: blur(4px); } }
+            @keyframes backdrop-fade-out { from { backdrop-filter: blur(4px); } to { backdrop-filter: blur(0px); } }
+            .theme-switcher:hover {
+                transform: none;
+            }
+            .tab-btn:not(.active):hover {
+                transform: none;
+            }
+            .link-button:hover {
+                transform: none;
+                box-shadow: 0 8px 25px -5px var(--shadow-color);
+            }
+            .link-button:hover svg {
+                transform: none;
+            }
+            .dialog-header button:hover {
+                transform: none;
+            }
+        }
+    </style></head>
+<body>
+<div id="background-animation"></div>
+
+<main class="card" id="main-card">
+    <button id="theme-switcher" class="theme-switcher" title="Сменить тему" aria-label="Сменить тему">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <h1>JesusArtt 🐱</h1>
+    <p class="subtitle">Shall we give love to each other by eating fruit ice? 🍒</p>
+
+    <div class="tabs" role="tablist">
+        <button id="main-tab-btn" class="tab-btn active" data-tab="main" role="tab" aria-selected="true" aria-controls="main">Основная</button>
+        <button id="horny-tab-btn" class="tab-btn" data-tab="horny" role="tab" aria-selected="false" aria-controls="horny">Хорни ТГК</button>
+        <button id="rules-tab-btn" class="tab-btn" data-tab="rules" role="tab" aria-selected="false" aria-controls="rules">Правила заказа</button>
+    </div>
+
+    <div class="tab-content-wrapper">
+        <div id="main" class="tab-content active" role="tabpanel" aria-labelledby="main-tab-btn">
+            <div class="links">
+                <button type="button" class="link-button" id="open-tg-modal-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><title>Telegram</title><path d="M41.4193 7.30899C41.4193 7.30899 45.3046 5.79399 44.9808 9.47328C44.8729 10.9883 43.9016 16.2908 43.1461 22.0262L40.5559 39.0159C40.5559 39.0159 40.3401 41.5048 38.3974 41.9377C36.4547 42.3705 33.5408 40.4227 33.0011 39.9898C32.5694 39.6652 24.9068 34.7955 22.2086 32.4148C21.4531 31.7655 20.5897 30.4669 22.3165 28.9519L33.6487 18.1305C34.9438 16.8319 36.2389 13.8019 30.8426 17.4812L15.7331 27.7616C15.7331 27.7616 14.0063 28.8437 10.7686 27.8698L3.75342 25.7055C3.75342 25.7055 1.16321 24.0823 5.58815 22.459C16.3807 17.3729 29.6555 12.1786 41.4193 7.30899Z"/></svg>
+                    <span>Мой Telegram</span>
+                </button>
+                <a href="https://www.tiktok.com/@tonighjjj" target="_blank" rel="noopener noreferrer" class="link-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><title>TikTok</title><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05,.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/></svg>
+                    <span>Мой TikTok</span>
+                </a>
+                <button type="button" class="link-button" id="donate-btn" data-clipboard-text="2202208050560250">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><title>Поддержать</title><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span>Поддержать (Сбербанк)</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="horny" class="tab-content" role="tabpanel" aria-labelledby="horny-tab-btn">
+            <div>
+                <h2>Как вступить в "Хорни ТГК"</h2>
+                <ol>
+                    <li>Переведите <strong>250+ рублей</strong> на Сбербанк (номер на главной), указав свой никнейм в Telegram в сообщении к платежу.</li>
+                    <li>Отправьте скриншот перевода пользователю <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
+                    <li>Подайте заявку на вступление в Telegram-канал.</li>
+                </ol>
+                <div class="notice-box">
+                    <p><strong>Важно:</strong> Перевод на сумму меньше указанной означает автоматический отказ в доступе.</p>
+                    <p>Забыли указать ник? Приложите к скриншоту доказательство платежа и напишите свой никнейм.</p>
+                    <p>Мы за доброе общение! Агрессивное поведение может стать причиной отказа в доступе.</p>
+                </div>
+            </div>
+            <a href="https://t.me/+rHPxxmJ0SKRjY2Ri" target="_blank" rel="noopener noreferrer" class="link-button">Подать заявку</a>
+        </div>
+
+        <div id="rules" class="tab-content" role="tabpanel" aria-labelledby="rules-tab-btn">
+            <div>
+                <h2>Правила оформления заказа</h2>
+                <h3>Свод правил:</h3>
+                <ol>
+                    <li>Правила могут и будут меняться.</li>
+                    <li>Предоплата за утвержденный заказчиком скетч должна быть внесена в течение 24 часов. Просрочка оплаты означает автоматический отказ от заказа. Работа начинается исключительно после получения предоплаты.</li>
+                    <li>Художник оставляет за собой право отказаться от дальнейшей работы с заказчиком в любой момент и без объяснения причин, за исключением случая полной или частичной предоплаты заказа. В случае предоплаты обязательства художника сохраняются до завершения работы или достижения соглашения о возврате средств.</li>
+                    <li>Заказчик вправе отменить заказ при наличии уважительной причины с возвратом предоплаты, за вычетом стоимости фактически выполненной работы на момент отмены. В случае грубости или неадекватного поведения со стороны заказчика, предоплата не возвращается.</li>
+                </ol>
+                <hr class="divider">
+                <h3>Правила оформления арта:</h3>
+                <p>Заказ должен быть расписан максимально подробно и оформлен одним сообщением (без разбивки на части). Описание желательно выстроить в порядке сверху вниз (от головы до ног), включая следующие детали:</p>
+                <strong>Голова/Лицо:</strong>
+                <ul>
+                    <li>Цвет волос, прическа (стрижка, укладка)</li>
+                    <li>Форма глаз и их цвет, форма бровей, ресницы</li>
+                    <li>Цвет кожи лица</li>
+                </ul>
+                <strong>Тело:</strong>
+                <ul>
+                    <li>Цвет кожи, рост и телосложение</li>
+                    <li>Размер одежды (примерные параметры)</li>
+                </ul>
+                <strong>Дополнительно:</strong>
+                <ul>
+                    <li>Аксессуары (украшения, очки и т.д.)</li>
+                    <li>Макияж, татуировки, пирсинг</li>
+                </ul>
+                <p>Можно скинуть фото-примеры с указанием, что именно должно быть похоже.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<dialog id="tg-modal">
+    <div class="dialog-header">
+        <h2>Мои каналы в Telegram</h2>
+        <button id="close-tg-modal-btn" aria-label="Закрыть">×</button>
+    </div>
+    <div class="dialog-body">
+        <a href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="link-button">Основной 🎨</a>
+        <a href="https://t.me/+rHPxxmJ0SKRjY2Ri" target="_blank" rel="noopener noreferrer" class="link-button">Хорни <span class="nsfw-badge">18+</span></a>
+        <a href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer" class="link-button">Шитпост 😹</a>
+    </div>
+</dialog>
+
+<script>
+    const mainCard = document.getElementById('main-card');
+    const body = document.body;
+    function initThemeSwitcher() {
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-theme');
+        }
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+        });
+    }
+    function initCard3DEffect() {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) return;
+        mainCard.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 1024) return;
+            const rect = mainCard.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateX = -y / 35;
+            const rotateY = x / 35;
+            mainCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+        mainCard.addEventListener('mouseleave', () => {
+            mainCard.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+        });
+    }
+    function initTabs() {
+        const tabsContainer = document.querySelector('.tabs');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const wrapper = document.querySelector('.tab-content-wrapper');
+        let isTransitioning = false;
+
+        const switchTab = (tabId) => {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            wrapper.scrollTo({ top: 0, behavior: 'auto' });
+
+            const currentActiveContent = wrapper.querySelector('.tab-content.active');
+            const newActiveContent = document.getElementById(tabId);
+
+            if (!newActiveContent || currentActiveContent === newActiveContent) {
+                isTransitioning = false;
+                return;
+            }
+
+            wrapper.style.height = `${wrapper.offsetHeight}px`;
+
+            tabButtons.forEach(btn => {
+                const isSelected = btn.dataset.tab === tabId;
+                btn.classList.toggle('active', isSelected);
+                btn.setAttribute('aria-selected', isSelected);
+            });
+
+            if (currentActiveContent) {
+                currentActiveContent.classList.add('exiting');
+                currentActiveContent.addEventListener('animationend', () => {
+                    currentActiveContent.classList.remove('active', 'exiting');
+                }, { once: true });
+            }
+
+            newActiveContent.classList.add('active');
+
+            requestAnimationFrame(() => {
+                const newHeight = newActiveContent.scrollHeight;
+
+                wrapper.addEventListener('transitionend', () => {
+                    wrapper.style.height = null;
+                    isTransitioning = false;
+                }, { once: true });
+
+                wrapper.style.height = `${newHeight}px`;
+            });
+        };
+
+        tabsContainer.addEventListener('click', (e) => {
+            const clickedButton = e.target.closest('.tab-btn');
+            if (clickedButton && !clickedButton.classList.contains('active')) {
+                switchTab(clickedButton.dataset.tab);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            const initialActiveContent = wrapper.querySelector('.tab-content.active');
+            if (initialActiveContent) {
+                wrapper.style.transition = 'none';
+                wrapper.style.height = `${initialActiveContent.scrollHeight}px`;
+                requestAnimationFrame(() => {
+                    wrapper.style.height = null;
+                    wrapper.style.transition = '';
+                });
+            }
+        });
+    }
+    function initTgModal() {
+        const modal = document.getElementById('tg-modal');
+        const openBtn = document.getElementById('open-tg-modal-btn');
+        const closeBtn = document.getElementById('close-tg-modal-btn');
+
+        if (!modal || !openBtn || !closeBtn) return;
+
+        const closeAnimated = () => {
+            modal.classList.add('closing');
+            modal.addEventListener('animationend', () => {
+                modal.classList.remove('closing');
+                modal.close();
+            }, { once: true });
+        };
+
+        openBtn.addEventListener('click', () => modal.showModal());
+        closeBtn.addEventListener('click', closeAnimated);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeAnimated();
+            }
+        });
+    }
+    function initDonateButton() {
+        const donateBtn = document.getElementById('donate-btn');
+        if (!donateBtn) return;
+        const donateBtnText = donateBtn.querySelector('span');
+        const cardNumber = donateBtn.dataset.clipboardText;
+
+        donateBtn.addEventListener('click', async () => {
+            if (donateBtn.classList.contains('copied') || donateBtn.classList.contains('is-swapping')) return;
+
+            try {
+                await navigator.clipboard.writeText(cardNumber);
+                const originalText = donateBtnText.textContent;
+
+                donateBtn.classList.add('is-swapping');
+
+                setTimeout(() => {
+                    donateBtnText.textContent = 'Скопировано!';
+                    donateBtn.classList.add('copied');
+                }, 200);
+
+                donateBtn.addEventListener('animationend', () => {
+                    donateBtn.classList.remove('is-swapping');
+                }, { once: true });
+
+                setTimeout(() => {
+                    donateBtnText.textContent = originalText;
+                    donateBtn.classList.remove('copied');
+                }, 2200);
+
+            } catch (err) {
+                console.error('Ошибка при копировании: ', err);
+                alert("Не удалось скопировать номер карты.");
+            }
+        });
+    }
+    function initRippleEffect() {
+        mainCard.addEventListener("click", (event) => {
+            const button = event.target.closest('.link-button, .tab-btn');
+            if (!button) return;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            const rect = button.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+            const existingRipple = button.querySelector(".ripple");
+            if (existingRipple) existingRipple.remove();
+            button.appendChild(circle);
+            circle.addEventListener('animationend', () => circle.remove(), { once: true });
+        });
+    }
+    function initBackgroundAnimation() {
+        const background = document.getElementById('background-animation');
+        if (!background) return;
+        const numShapes = 15;
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < numShapes; i++) {
+            const shape = document.createElement('span');
+            shape.classList.add('shape');
+            const size = Math.random() * 40 + 10;
+            shape.style.width = `${size}px`;
+            shape.style.height = `${size}px`;
+            shape.style.left = `${Math.random() * 100}%`;
+            shape.style.animationDuration = `${Math.random() * 15 + 10}s`;
+            shape.style.animationDelay = `${Math.random() * 5}s`;
+            fragment.appendChild(shape);
+        }
+        background.appendChild(fragment);
+    }
+    function initializePage() {
+        if (typeof window === 'undefined' || typeof document === 'undefined') return;
+        initThemeSwitcher();
+        initCard3DEffect();
+        initTabs();
+        initTgModal();
+        initDonateButton();
+        initRippleEffect();
+        initBackgroundAnimation();
+    }
+    initializePage();
+</script>
+
+</body>
+</html>
