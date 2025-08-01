@@ -1,230 +1,177 @@
 ﻿'use strict';
 
-    function initThemeSwitcher() {
-        const themeSwitcher = document.getElementById('theme-switcher');
-        if (!themeSwitcher) return;
+class App {
+    constructor() {
+        this.dom = {
+            root: document.documentElement,
+            themeSwitcher: document.getElementById('theme-switcher'),
+            copyButtonsContainer: document.body,
+            tabs: {
+                container: document.querySelector('.tabs-container'),
+                list: document.querySelector('.tab-list'),
+                panels: document.querySelector('.tab-panels'),
+            },
+            telegramModal: {
+                openBtn: document.getElementById('open-tg-modal-btn'),
+                modal: document.getElementById('tg-modal'),
+                closeBtn: document.querySelector('#tg-modal .modal-close-btn'),
+                hornyRedirectBtn: document.getElementById('horny-tg-redirect'),
+                exclusiveTabBtn: document.getElementById('tab-exclusive'),
+            },
+        };
 
-        const rootEl = document.documentElement;
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        this.activeTab = null;
+        this.activePanel = null;
+        this.constants = {
+            COPY_SUCCESS_DURATION: 2000,
+            RESIZE_DEBOUNCE_DELAY: 150,
+        };
+
+        this.init();
+    }
+
+    init() {
+        this.initThemeSwitcher();
+        this.initCopyButtons();
+        this.initTabs();
+        this.initTelegramModal();
+    }
+
+    static debounce(func, delay) {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func(...args), delay);
+        };
+    }
+
+    initThemeSwitcher() {
+        if (!this.dom.themeSwitcher) return;
+
         const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
 
-        const setTheme = (isDark) => {
-            rootEl.classList.toggle('dark-theme', isDark);
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        };
+        this.dom.root.classList.toggle('dark-theme', isDark);
 
-        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
-
-        themeSwitcher.addEventListener('click', () => {
-            setTheme(!rootEl.classList.contains('dark-theme'));
+        this.dom.themeSwitcher.addEventListener('click', () => {
+            const currentlyDark = this.dom.root.classList.toggle('dark-theme');
+            localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
         });
     }
 
-    function initCopyButtons() {
-        document.querySelectorAll('[data-clipboard-text]').forEach(button => {
-            const iconElement = button.querySelector('.material-symbols-outlined');
+    initCopyButtons() {
+        this.dom.copyButtonsContainer.addEventListener('click', async (e) => {
+            const button = e.target.closest('[data-clipboard-text]');
+            if (!button || button.disabled) return;
+
+            const textToCopy = button.dataset.clipboardText;
             const textSpan = button.querySelector('span:not(.material-symbols-outlined)');
+            const iconElement = button.querySelector('.material-symbols-outlined');
+            const originalText = textSpan?.textContent ?? '';
+            const originalIconHTML = iconElement?.innerHTML ?? '';
 
-            const originalIconHTML = iconElement ? iconElement.innerHTML : null;
-            const originalText = textSpan ? textSpan.textContent : button.textContent;
-            let timeoutId = null;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
 
-            button.addEventListener('click', async (e) => {
-                e.preventDefault();
-                if (button.classList.contains('copied')) return;
+                button.disabled = true;
+                button.classList.add('copied');
+                if (textSpan) textSpan.textContent = 'Скопировано!';
+                if (iconElement) iconElement.innerHTML = 'check_circle';
 
-                const textToCopy = button.dataset.clipboardText;
-                if (!textToCopy) return;
-
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-                    clearTimeout(timeoutId);
-                    button.classList.add('copied');
-
-                    // Упрощенная логика обновления
-                    if (textSpan) textSpan.textContent = 'Скопировано!';
-                    if (iconElement) iconElement.innerHTML = 'check_circle';
-
-                    timeoutId = setTimeout(() => {
-                        button.classList.remove('copied');
-                        // Упрощенная логика восстановления
-                        if (textSpan) textSpan.textContent = originalText;
-                        if (iconElement) iconElement.innerHTML = originalIconHTML;
-                    }, 2000);
-                } catch (err) {
-                    console.error('Ошибка при копировании: ', err);
-                    alert("Не удалось скопировать.");
-                }
-            });
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.classList.remove('copied');
+                    if (textSpan) textSpan.textContent = originalText;
+                    if (iconElement) iconElement.innerHTML = originalIconHTML;
+                }, this.constants.COPY_SUCCESS_DURATION);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
         });
     }
 
-    function initBackgroundAnimation() {
-        const background = document.getElementById('background-animation');
-        if (!background || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
-        const numShapes = 15;
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < numShapes; i++) {
-            const shape = document.createElement('span');
-            shape.classList.add('shape');
-            const size = Math.random() * 40 + 10;
-            shape.style.width = `${size}px`;
-            shape.style.height = `${size}px`;
-            shape.style.left = `${Math.random() * 100}%`;
-            shape.style.animationDuration = `${Math.random() * 15 + 10}s`;
-            shape.style.animationDelay = `${Math.random() * 5}s`;
-            fragment.appendChild(shape);
-        }
-        background.appendChild(fragment);
+    initTabs() {
+        if (!this.dom.tabs.container) return;
+
+        this.dom.tabs.list.addEventListener('click', this.handleTabClick.bind(this));
+        window.addEventListener('resize', App.debounce(this.handleResize.bind(this), this.constants.RESIZE_DEBOUNCE_DELAY));
+
+        this.setupInitialTabState();
     }
 
-    /**
-     * Улучшенная система вкладок.
-     * Анимации сделаны более надежными и предсказуемыми.
-     * Логика разделена на вспомогательные функции для лучшей читаемости и поддержки.
-     */
-    function initTabs() {
-        const tabsContainer = document.querySelector('.tabs-container');
-        if (!tabsContainer) return;
+    setupInitialTabState() {
+        const initialActiveTab = this.dom.tabs.list.querySelector('.is-active');
+        if (!initialActiveTab) return;
 
-        const tabList = tabsContainer.querySelector('.tab-list');
-        const tabIndicator = tabList.querySelector('.tab-indicator');
-        const card = tabsContainer.closest('.card');
-        let isAnimating = false;
+        const panelId = initialActiveTab.getAttribute('aria-controls');
+        const initialPanel = this.dom.tabs.panels.querySelector(`#${panelId}`);
 
-        // Обновляет положение и размер индикатора активной вкладки.
-        const updateIndicator = (activeTab) => {
-            if (!activeTab || !tabIndicator) return;
-            tabIndicator.style.left = `${activeTab.offsetLeft}px`;
-            tabIndicator.style.width = `${activeTab.offsetWidth}px`;
-        };
+        if (initialPanel) {
+            this.activeTab = initialActiveTab;
+            this.activePanel = initialPanel;
+            this.updatePanelsHeight();
+        }
+    }
 
-        // Запускает каскадную анимацию для кнопок-ссылок внутри панели.
-        const animateLinkButtons = (panel) => {
-            const gridToAnimate = panel.querySelector('.links-grid');
-            if (!gridToAnimate) return;
+    handleTabClick(e) {
+        const clickedTab = e.target.closest('.tab-button');
+        if (clickedTab && clickedTab !== this.activeTab) {
+            this.switchTab(clickedTab);
+        }
+    }
 
-            // Сброс анимации путем удаления и повторного добавления класса.
-            gridToAnimate.classList.remove('animate-links');
-            // requestAnimationFrame гарантирует, что браузер обработал удаление класса
-            // перед его повторным добавлением в следующем кадре, тем самым перезапуская анимацию.
-            requestAnimationFrame(() => {
-                gridToAnimate.classList.add('animate-links');
-            });
-        };
+    switchTab(newTab) {
+        const newPanelId = newTab.getAttribute('aria-controls');
+        const newPanel = this.dom.tabs.panels.querySelector(`#${newPanelId}`);
+        if (!newPanel) return;
 
-        // Основная функция переключения вкладок.
-        const switchTab = (newTab) => {
-            if (isAnimating || newTab.classList.contains('is-active')) return;
-            isAnimating = true;
+        if (this.activeTab) {
+            this.activeTab.classList.remove('is-active');
+            this.activeTab.setAttribute('aria-selected', 'false');
+        }
+        if (this.activePanel) {
+            this.activePanel.classList.remove('is-active');
+            this.activePanel.hidden = true;
+        }
 
-            const oldTab = tabList.querySelector('.is-active');
-            const oldPanel = document.getElementById(oldTab.getAttribute('aria-controls'));
-            const newPanel = document.getElementById(newTab.getAttribute('aria-controls'));
+        newTab.classList.add('is-active');
+        newTab.setAttribute('aria-selected', 'true');
+        newPanel.hidden = false;
 
-            if (!oldPanel || !newPanel) {
-                isAnimating = false;
-                return;
-            }
-
-            // 1. Получаем текущую высоту для плавной анимации.
-            const oldHeight = card.offsetHeight;
-            card.style.height = `${oldHeight}px`;
-
-            // 2. Деактивируем старую вкладку и панель.
-            oldTab.classList.remove('is-active');
-            oldTab.setAttribute('aria-selected', 'false');
-            oldPanel.classList.remove('is-active');
-            oldPanel.hidden = true;
-
-            // 3. Активируем новую вкладку и панель.
-            newTab.classList.add('is-active');
-            newTab.setAttribute('aria-selected', 'true');
-            newPanel.hidden = false;
+        requestAnimationFrame(() => {
+            this.dom.tabs.panels.style.height = `${newPanel.scrollHeight}px`;
             newPanel.classList.add('is-active');
-
-            // 4. Перемещаем индикатор и запускаем анимацию ссылок.
-            updateIndicator(newTab);
-            animateLinkButtons(newPanel);
-
-            // Плавно прокручиваем к вкладкам, если они ушли за пределы экрана.
-            if (tabsContainer.getBoundingClientRect().top < 0) {
-                tabsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            // 5. Анимируем изменение высоты.
-            requestAnimationFrame(() => {
-                const newHeight = card.scrollHeight;
-
-                const onTransitionEnd = (event) => {
-                    if (event.target === card && event.propertyName === 'height') {
-                        card.style.height = ''; // Сбрасываем высоту на auto для адаптивности.
-                        card.removeEventListener('transitionend', onTransitionEnd);
-                        isAnimating = false;
-                    }
-                };
-
-                card.removeEventListener('transitionend', onTransitionEnd);
-                card.addEventListener('transitionend', onTransitionEnd);
-
-                card.style.height = `${newHeight}px`;
-
-                // Если высота не изменилась, transitionend не сработает, поэтому очищаем вручную.
-                if (oldHeight === newHeight) {
-                    onTransitionEnd({ target: card, propertyName: 'height' });
-                }
-            });
-        };
-
-        tabList.addEventListener('click', (e) => {
-            const clickedTab = e.target.closest('.tab-button');
-            if (clickedTab) {
-                e.preventDefault();
-                switchTab(clickedTab);
-            }
         });
 
-        // Первоначальная настройка
-        const initialActiveTab = tabList.querySelector('.is-active');
-        if (initialActiveTab) {
-            updateIndicator(initialActiveTab);
-            const initialActivePanel = document.getElementById(initialActiveTab.getAttribute('aria-controls'));
-            // Задерживаем начальную анимацию ссылок, чтобы она произошла после анимации появления карточки.
-            // Анимация карточки: 450ms длительность + 200ms задержка = 650ms.
-            setTimeout(() => {
-                if (initialActivePanel) {
-                    animateLinkButtons(initialActivePanel);
-                }
-            }, 650);
-        }
+        this.activeTab = newTab;
+        this.activePanel = newPanel;
 
-        window.addEventListener('resize', () => {
-            if (!isAnimating) {
-                updateIndicator(tabList.querySelector('.is-active'));
-            }
+        if (this.dom.tabs.list.getBoundingClientRect().top < 0) {
+            this.dom.tabs.list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    updatePanelsHeight() {
+        if (!this.dom.tabs.panels || !this.activePanel) return;
+        requestAnimationFrame(() => {
+            this.dom.tabs.panels.style.height = `${this.activePanel.scrollHeight}px`;
         });
     }
 
-    function initTelegramModal() {
-        const openBtn = document.getElementById('open-tg-modal-btn');
-        const modal = document.getElementById('tg-modal');
-        if (!openBtn || !modal) return;
+    handleResize() {
+        this.updatePanelsHeight();
+    }
 
-        const modalContent = modal.querySelector('.modal-content');
-        const closeBtn = modal.querySelector('.modal-close-btn');
-        const hornyRedirectBtn = document.getElementById('horny-tg-redirect');
-        const exclusiveTabBtn = document.getElementById('tab-exclusive');
-        const focusableElements = modalContent.querySelectorAll('a[href], button:not([disabled])');
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
+    initTelegramModal() {
+        const { openBtn, modal, closeBtn, hornyRedirectBtn, exclusiveTabBtn } = this.dom.telegramModal;
+        if (!openBtn || !modal || !closeBtn) return;
 
         const showModal = () => {
             modal.classList.add('is-visible');
             modal.setAttribute('aria-hidden', 'false');
-            firstFocusable?.focus();
             document.addEventListener('keydown', handleModalKeydown);
+            closeBtn.focus();
         };
 
         const hideModal = () => {
@@ -235,21 +182,9 @@
         };
 
         const handleModalKeydown = (e) => {
-            if (e.key === 'Escape') hideModal();
-            if (e.key === 'Tab') trapFocus(e);
-        };
-
-        const trapFocus = (e) => {
-            if (e.shiftKey) {
-                if (document.activeElement === firstFocusable) {
-                    lastFocusable.focus();
-                    e.preventDefault();
-                }
-            } else {
-                if (document.activeElement === lastFocusable) {
-                    firstFocusable.focus();
-                    e.preventDefault();
-                }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                hideModal();
             }
         };
 
@@ -259,17 +194,12 @@
             if (e.target === modal) hideModal();
         });
 
-        hornyRedirectBtn.addEventListener('click', () => {
+        hornyRedirectBtn?.addEventListener('click', () => {
             hideModal();
             exclusiveTabBtn?.click();
             exclusiveTabBtn?.focus();
         });
     }
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-        initThemeSwitcher();
-        initCopyButtons();
-        initBackgroundAnimation();
-        initTabs();
-        initTelegramModal();
-    });
+document.addEventListener('DOMContentLoaded', () => new App());
