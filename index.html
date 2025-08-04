@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div id="background-animation"></div>
 <main class="card">
     <button type="button" id="theme-switcher" class="theme-switcher" title="Сменить тему" aria-label="Сменить тему">
         <span class="material-symbols-outlined sun-icon" aria-hidden="true">light_mode</span>
@@ -29,6 +29,7 @@
             <button type="button" role="tab" aria-selected="true" aria-controls="panel-links" id="tab-links" class="tab-button is-active">Ссылки</button>
             <button type="button" role="tab" aria-selected="false" aria-controls="panel-exclusive" id="tab-exclusive" class="tab-button">Эксклюзив 18+</button>
             <button type="button" role="tab" aria-selected="false" aria-controls="panel-rules" id="tab-rules" class="tab-button">Правила</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="panel-about" id="tab-about" class="tab-button">О себе</button>
         </nav>
 
         <div class="tab-panels">
@@ -109,6 +110,23 @@
                             <li>Макияж, татуировки, пирсинг</li>
                         </ul>
                         <p>Можно скинуть фото-примеры с указанием, что именно должно быть похоже.</p>
+                    </div>
+                </section>
+            </div>
+
+            <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="tab-panel" hidden>
+                <section class="content-block">
+                    <h2>О себе</h2>
+                    <div class="about-me-content">
+                        <p>Привет! Меня зовут Джис и я рисую ;P</p>
+                        <p>Начав с обычных карандашей и бумаги, со временем я открыла для себя бесконечные возможности цифрового арта на телефоне. Это позволило мне совершить настоящий рывок в творчестве:</p>
+                        <ul>
+                            <li>Освоила покрас и множество разных кистей.</li>
+                            <li>Нашла себя в этом деле и создала много персонажей, в которых вложила частичку своей души.</li>
+                        </ul>
+                        <p>А самый главный источник моего вдохновения — это мой <a href="https://ineedmypills.github.io/" target="_blank" rel="noopener noreferrer" class="inline-link">любимый мальчик</a>! Он помогает мне развиваться и поддерживает в творческих начинаниях каждый день.</p>
+                        <p>Свои лучшие работы я публикую <a href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="inline-link">в свойм канале</a>, и уверена, что они тебя заинтересуют!</p>
+                        <p>А ещё ты можешь <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link">заказать у меня арт</a>, который я создам специально для тебя с учётом всех пожеланий.</p>
                     </div>
                 </section>
             </div>

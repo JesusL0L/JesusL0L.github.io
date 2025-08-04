@@ -35,6 +35,7 @@ class App {
         this.initCopyButtons();
         this.initTabs();
         this.initTelegramModal();
+        this.initBackgroundAnimation();
     }
 
     static debounce(func, delay) {
@@ -43,6 +44,25 @@ class App {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => func(...args), delay);
         };
+    }
+
+    initBackgroundAnimation() {
+        const background = document.getElementById('background-animation');
+        if (!background) return;
+        const numShapes = 15;
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < numShapes; i++) {
+            const shape = document.createElement('span');
+            shape.classList.add('shape');
+            const size = Math.random() * 40 + 10;
+            shape.style.width = `${size}px`;
+            shape.style.height = `${size}px`;
+            shape.style.left = `${Math.random() * 100}%`;
+            shape.style.animationDuration = `${Math.random() * 15 + 10}s`;
+            shape.style.animationDelay = `${Math.random() * 5}s`;
+            fragment.appendChild(shape);
+        }
+        background.appendChild(fragment);
     }
 
     initThemeSwitcher() {

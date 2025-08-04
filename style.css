@@ -4,153 +4,94 @@
     --md-ref-typeface-brand: 'Caveat', cursive;
     --md-ref-typeface-plain: 'Nunito', sans-serif;
 
-    /* Material You Tokens */
-    --md-sys-color-primary-light: #8d5300;
-    --md-sys-color-on-primary-light: #ffffff;
-    --md-sys-color-primary-container-light: #ffddb7;
-    --md-sys-color-on-primary-container-light: #2d1700;
-    --md-sys-color-secondary-light: #725c41;
-    --md-sys-color-on-secondary-light: #ffffff;
-    --md-sys-color-secondary-container-light: #fddfbb;
-    --md-sys-color-on-secondary-container-light: #2a1a05;
-    --md-sys-color-tertiary-light: #58633a;
-    --md-sys-color-on-tertiary-light: #ffffff;
-    --md-sys-color-tertiary-container-light: #dce8b4;
-    --md-sys-color-on-tertiary-container-light: #161e00;
-    --md-sys-color-error-light: #ba1a1a;
-    --md-sys-color-on-error-light: #ffffff;
-    --md-sys-color-error-container-light: #ffdad6;
-    --md-sys-color-on-error-container-light: #410002;
-    --md-sys-color-background-light: #fffbff;
-    --md-sys-color-on-background-light: #1f1b16;
-    --md-sys-color-surface-light: #fffbff;
-    --md-sys-color-on-surface-light: #1f1b16;
-    --md-sys-color-surface-variant-light: #f1e0d0;
-    --md-sys-color-on-surface-variant-light: #4f4539;
-    --md-sys-color-outline-light: #827568;
-    --md-sys-color-outline-variant-light: #d4c4b5;
-    --md-sys-color-shadow-light: #000000;
-    --md-sys-color-scrim-light: #000000;
-    --md-sys-color-inverse-surface-light: #34302a;
-    --md-sys-color-inverse-on-surface-light: #f8efe7;
-    --md-sys-color-inverse-primary-light: #ffb860;
-    --md-sys-color-surface-dim-light: #e4d8ce;
-    --md-sys-color-surface-bright-light: #fffbff;
-    --md-sys-color-surface-container-lowest-light: #ffffff;
-    --md-sys-color-surface-container-low-light: #fef7f1;
-    --md-sys-color-surface-container-light: #f8f1ea;
-    --md-sys-color-surface-container-high-light: #f2ece5;
-    --md-sys-color-surface-container-highest-light: #ede1d9;
+    /* Corner Radius */
+    --shape-corner-small: 6px;
+    --shape-corner-medium: 8px;
+    --shape-corner-large: 16px;
+    --shape-corner-extra-large: 28px;
+    --shape-corner-full: 9999px;
 
-    --md-sys-color-primary-dark: #ffb860;
-    --md-sys-color-on-primary-dark: #4b2900;
-    --md-sys-color-primary-container-dark: #6c3d00;
-    --md-sys-color-on-primary-container-dark: #ffddb7;
-    --md-sys-color-secondary-dark: #e0c3a1;
-    --md-sys-color-on-secondary-dark: #412e17;
-    --md-sys-color-secondary-container-dark: #59442b;
-    --md-sys-color-on-secondary-container-dark: #fddfbb;
-    --md-sys-color-tertiary-dark: #c0cc9a;
-    --md-sys-color-on-tertiary-dark: #2b3410;
-    --md-sys-color-tertiary-container-dark: #414b24;
-    --md-sys-color-on-tertiary-container-dark: #dce8b4;
-    --md-sys-color-error-dark: #ffb4ab;
-    --md-sys-color-on-error-dark: #690005;
-    --md-sys-color-error-container-dark: #93000a;
-    --md-sys-color-on-error-container-dark: #ffdad6;
-    --md-sys-color-background-dark: #1f1b16;
-    --md-sys-color-on-background-dark: #ebe1d9;
-    --md-sys-color-surface-dark: #1f1b16;
-    --md-sys-color-on-surface-dark: #ebe1d9;
-    --md-sys-color-surface-variant-dark: #4f4539;
-    --md-sys-color-on-surface-variant-dark: #d4c4b5;
-    --md-sys-color-outline-dark: #9d8e81;
-    --md-sys-color-outline-variant-dark: #4f4539;
-    --md-sys-color-shadow-dark: #000000;
-    --md-sys-color-scrim-dark: #000000;
-    --md-sys-color-inverse-surface-dark: #ebe1d9;
-    --md-sys-color-inverse-on-surface-dark: #1f1b16;
-    --md-sys-color-inverse-primary-dark: #8d5300;
-    --md-sys-color-surface-dim-dark: #16130e;
-    --md-sys-color-surface-bright-dark: #3d3933;
-    --md-sys-color-surface-container-lowest-dark: #14100c;
-    --md-sys-color-surface-container-low-dark: #1f1b16;
-    --md-sys-color-surface-container-dark: #231f1a;
-    --md-sys-color-surface-container-high-dark: #2e2a24;
-    --md-sys-color-surface-container-highest-dark: #39342e;
-
-    /* Semantic Aliases */
-    --primary: var(--md-sys-color-primary-light);
-    --on-primary: var(--md-sys-color-on-primary-light);
-    --primary-container: var(--md-sys-color-primary-container-light);
-    --on-primary-container: var(--md-sys-color-on-primary-container-light);
-    --secondary: var(--md-sys-color-secondary-light);
-    --on-secondary: var(--md-sys-color-on-secondary-light);
-    --secondary-container: var(--md-sys-color-secondary-container-light);
-    --on-secondary-container: var(--md-sys-color-on-secondary-container-light);
-    --tertiary: var(--md-sys-color-tertiary-light);
-    --on-tertiary: var(--md-sys-color-on-tertiary-light);
-    --tertiary-container: var(--md-sys-color-tertiary-container-light);
-    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-light);
-    --background: var(--md-sys-color-background-light);
-    --on-background: var(--md-sys-color-on-background-light);
-    --surface: var(--md-sys-color-surface-light);
-    --on-surface: var(--md-sys-color-on-surface-light);
-    --surface-variant: var(--md-sys-color-surface-variant-light);
-    --on-surface-variant: var(--md-sys-color-on-surface-variant-light);
-    --outline: var(--md-sys-color-outline-light);
-    --outline-variant: var(--md-sys-color-outline-variant-light);
-    --scrim: var(--md-sys-color-scrim-light);
-    --surface-container-lowest: var(--md-sys-color-surface-container-lowest-light);
-    --surface-container-low: var(--md-sys-color-surface-container-low-light);
-    --surface-container: var(--md-sys-color-surface-container-light);
-    --surface-container-high: var(--md-sys-color-surface-container-high-light);
-    --surface-container-highest: var(--md-sys-color-surface-container-highest-light);
-    --on-surface-rgb: 31, 27, 22;
-    --primary-rgb: 141, 83, 0;
-    --success-container: #4CAF50;
-    --on-success-container: #FFFFFF;
+    /* New Color Scheme - Light Theme */
+    --primary: #feb3a6;
+    --on-primary: #5D4037;
+    --primary-container: #ffdde4;
+    --on-primary-container: #5D4037;
+    --secondary: #f88487;
+    --on-secondary: #5D4037;
+    --secondary-container: #ff9c85; /* accent-1 */
+    --on-secondary-container: #5D4037; /* text-color */
+    --tertiary: #f9a79b;
+    --on-tertiary: #5D4037;
+    --tertiary-container: #ff6b6b; /* nsfw-bg */
+    --on-tertiary-container: #ffffff;
+    --background: #fffbff;
+    --on-background: #5D4037; /* text-color */
+    --surface: #ffffff;
+    --on-surface: #5D4037; /* text-color */
+    --surface-variant: #fff0f2; /* dropdown-bg */
+    --on-surface-variant: #795548; /* text-muted */
+    --outline: var(--tertiary); /* card-border, scrollbar-hover */
+    --outline-variant: #ffc6bd; /* tab-border */
+    --scrim: rgba(0, 0, 0, 0.4);
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: rgba(255, 255, 255, 0.97); /* card-bg */
+    --surface-container: #fff0f2; /* dropdown-bg */
+    --surface-container-high: #ffdde4; /* dropdown-hover */
+    --surface-container-highest: #ffdde4;
+    --on-surface-rgb: 93, 64, 55;
+    --primary-rgb: 254, 179, 166;
+    --success-container: #a5d6a7; /* copied-bg */
+    --on-success-container: #000000;
+    --shape-bg: rgba(254, 179, 166, 0.4);
 
     --ease-emphasized: cubic-bezier(0.4, 0.0, 0.2, 1);
     --duration-short: 200ms;
     --duration-medium: 300ms;
     --duration-long: 400ms;
 
-    --elevation-1: 0px 1px 3px 1px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3);
-    --elevation-2: 0px 2px 6px 2px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3);
-    --elevation-3: 0px 4px 8px 3px rgba(0,0,0,0.15), 0px 1px 3px 0px rgba(0,0,0,0.3);
+    --elevation-1: 0px 1px 3px 1px rgba(248, 132, 135, 0.4);
+    --elevation-2: 0px 2px 6px 2px rgba(248, 132, 135, 0.4);
+    --elevation-3: 0px 4px 8px 3px rgba(248, 132, 135, 0.4);
     --surface-tint-layer: linear-gradient(0deg, rgba(var(--primary-rgb), 0.05), rgba(var(--primary-rgb), 0.05));
 }
 
 html.dark-theme {
-    --primary: var(--md-sys-color-primary-dark);
-    --on-primary: var(--md-sys-color-on-primary-dark);
-    --primary-container: var(--md-sys-color-primary-container-dark);
-    --on-primary-container: var(--md-sys-color-on-primary-container-dark);
-    --secondary: var(--md-sys-color-secondary-dark);
-    --on-secondary: var(--md-sys-color-on-secondary-dark);
-    --secondary-container: var(--md-sys-color-secondary-container-dark);
-    --on-secondary-container: var(--md-sys-color-on-secondary-container-dark);
-    --tertiary: var(--md-sys-color-tertiary-dark);
-    --on-tertiary: var(--md-sys-color-on-tertiary-dark);
-    --tertiary-container: var(--md-sys-color-tertiary-container-dark);
-    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-dark);
-    --background: var(--md-sys-color-background-dark);
-    --on-background: var(--md-sys-color-on-background-dark);
-    --surface: var(--md-sys-color-surface-dark);
-    --on-surface: var(--md-sys-color-on-surface-dark);
-    --surface-variant: var(--md-sys-color-surface-variant-dark);
-    --on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
-    --outline: var(--md-sys-color-outline-dark);
-    --outline-variant: var(--md-sys-color-outline-variant-dark);
-    --scrim: var(--md-sys-color-scrim-dark);
-    --surface-container-lowest: var(--md-sys-color-surface-container-lowest-dark);
-    --surface-container-low: var(--md-sys-color-surface-container-low-dark);
-    --surface-container: var(--md-sys-color-surface-container-dark);
-    --surface-container-high: var(--md-sys-color-surface-container-high-dark);
-    --surface-container-highest: var(--md-sys-color-surface-container-highest-dark);
-    --on-surface-rgb: 235, 225, 217;
-    --primary-rgb: 255, 184, 96;
+    /* New Color Scheme - Dark Theme */
+    --primary: #c06c84; /* accent-2 */
+    --on-primary: #e0e0e0;
+    --primary-container: #6d5b7b; /* accent-1 */
+    --on-primary-container: #e0e0e0;
+    --secondary: #6d5b7b; /* accent-1 */
+    --on-secondary: #e0e0e0;
+    --secondary-container: #6d5b7b; /* accent-1 */
+    --on-secondary-container: #e0e0e0; /* text-color */
+    --tertiary: #c06c84; /* accent-2 */
+    --on-tertiary: #e0e0e0;
+    --tertiary-container: #c06c84;
+    --on-tertiary-container: #ffffff;
+    --background: #1f1b16;
+    --on-background: #e0e0e0; /* text-color */
+    --surface: #1f1b16;
+    --on-surface: #e0e0e0; /* text-color */
+    --surface-variant: #3a3a3a; /* dropdown-bg */
+    --on-surface-variant: #b0b0b0; /* text-muted */
+    --outline: var(--primary-container); /* card-border, scrollbar-hover */
+    --outline-variant: var(--primary); /* tab-border, scrollbar */
+    --scrim: rgba(0, 0, 0, 0.4);
+    --surface-container-lowest: #14100c;
+    --surface-container-low: rgba(40, 40, 40, 0.97); /* card-bg */
+    --surface-container: #3a3a3a; /* dropdown-bg */
+    --surface-container-high: #4a4a4a; /* dropdown-hover */
+    --surface-container-highest: #4a4a4a;
+    --on-surface-rgb: 224, 224, 224;
+    --primary-rgb: 192, 108, 132;
+    --success-container: #a5d6a7; /* copied-bg */
+    --on-success-container: #000000;
+    --shape-bg: rgba(255, 255, 255, 0.05);
+
+    --elevation-1: 0 1px 2px rgba(0,0,0,.3), 0 1px 3px 1px rgba(var(--primary-rgb),.15);
+    --elevation-2: 0 1px 2px rgba(0,0,0,.3), 0 2px 6px 2px rgba(var(--primary-rgb),.15);
+    --elevation-3: 0 1px 3px rgba(0,0,0,.3), 0 4px 8px 3px rgba(var(--primary-rgb),.15);
 }
 
 *, *::before, *::after {
@@ -160,6 +101,7 @@ html.dark-theme {
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 20px;
 }
 
 body {
@@ -182,7 +124,7 @@ body {
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background-color: var(--outline-variant); border-radius: 6px; border: 3px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb { background-color: var(--outline-variant); border-radius: var(--shape-corner-small); border: 3px solid transparent; background-clip: content-box; }
 ::-webkit-scrollbar-thumb:hover { background-color: var(--outline); }
 
 /* Animations */
@@ -200,7 +142,7 @@ body {
     background-color: var(--surface-container-low);
     background-image: var(--surface-tint-layer);
     background-blend-mode: color-dodge;
-    border-radius: 28px; /* M3: Large radius */
+    border-radius: var(--shape-corner-extra-large);
     text-align: center;
     transition: background-color var(--duration-medium), box-shadow var(--duration-medium);
     box-shadow: var(--elevation-1);
@@ -246,7 +188,7 @@ h2 {
     justify-content: center;
     background: none;
     border: none;
-    border-radius: 50%;
+    border-radius: var(--shape-corner-full);
     cursor: pointer;
     color: var(--on-surface-variant);
     transition: transform var(--duration-short), color var(--duration-short);
@@ -256,7 +198,7 @@ h2 {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 50%;
+    border-radius: var(--shape-corner-full);
     background-color: var(--on-surface);
     opacity: 0;
     transition: opacity var(--duration-short);
@@ -281,7 +223,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     display: flex;
     margin: 24px 0;
     position: relative;
-    border-bottom: 1px solid var(--outline-variant); /* M3: Add a divider line */
+    border-bottom: 1px solid var(--outline-variant);
     justify-content: center;
     gap: 8px;
 }
@@ -292,7 +234,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     padding: 0 24px;
     border: none;
     background-color: transparent;
-    border-radius: 0; /* No pill shape */
+    border-radius: 0;
     font-family: var(--md-ref-typeface-plain);
     font-size: 0.875rem; /* M3: Label Large */
     font-weight: 700;
@@ -300,7 +242,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     cursor: pointer;
     transition: color var(--duration-medium) var(--ease-emphasized);
     position: relative;
-    overflow: hidden; /* Hide indicator overflow */
+    overflow: hidden;
 }
 
 .tab-button::after {
@@ -365,12 +307,12 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     align-items: center;
     justify-content: center;
     gap: 12px;
-    height: 40px; /* M3: Standard height */
+    height: 48px;
     padding: 0 24px;
     background-color: var(--secondary-container);
     color: var(--on-secondary-container);
     border: none;
-    border-radius: 20px; /* M3: Full pill shape */
+    border-radius: var(--shape-corner-full);
     font-family: var(--md-ref-typeface-plain);
     font-size: 0.875rem; /* M3: Label Large */
     font-weight: 700;
@@ -407,13 +349,13 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    height: 32px;
+    height: 40px;
     margin-inline-start: 8px;
-    padding: 0 12px;
+    padding: 0 16px;
     font-size: 0.8rem;
     font-weight: 700;
     border: 1px solid var(--outline);
-    border-radius: 20px; /* M3: Pill shape */
+    border-radius: var(--shape-corner-full);
     background-color: transparent;
     color: var(--primary);
     cursor: pointer;
@@ -432,7 +374,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(var(--scrim), 0.4);
+    background: var(--scrim);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -454,7 +396,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     background-image: var(--surface-tint-layer);
     background-blend-mode: color-dodge;
     padding: 24px;
-    border-radius: 28px; /* M3: Large radius */
+    border-radius: var(--shape-corner-extra-large);
     width: 90%;
     max-width: 400px;
     position: relative;
@@ -479,7 +421,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     justify-content: center;
     background: none;
     border: none;
-    border-radius: 50%;
+    border-radius: var(--shape-corner-full);
     font-size: 1.5rem;
     color: var(--on-surface-variant);
     cursor: pointer;
@@ -526,7 +468,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     font-weight: 700;
     background-color: var(--tertiary-container);
     color: var(--on-tertiary-container);
-    border-radius: 8px;
+    border-radius: var(--shape-corner-medium);
     margin-left: 8px;
     vertical-align: middle;
 }
@@ -545,7 +487,7 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
 .important-note {
     padding: 16px;
     background-color: var(--surface-container);
-    border-radius: 16px; /* M3: Large radius */
+    border-radius: var(--shape-corner-large);
     margin: 24px 0;
     border: 1px solid var(--outline-variant);
 }
@@ -564,10 +506,10 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
 /* Responsive */
 @media (max-width: 640px) {
     body { padding: 20px 15px; }
-    .card { padding: 24px 16px; border-radius: 28px; } /* Consistent large radius */
+    .card { padding: 24px 16px; }
     h1 { font-size: 3rem; }
     .links-grid { grid-template-columns: 1fr; }
-    .tab-list { gap: 4px; } /* Reduce gap on smaller screens */
+    .tab-list { gap: 4px; }
     .tab-button { padding: 0 16px; font-size: 0.8rem; height: 40px; }
 }
 
@@ -576,5 +518,39 @@ html.dark-theme .moon-icon { opacity: 1; visibility: visible; transform: rotate(
     *, *::before, *::after {
         animation: none !important;
         transition: none !important;
+    }
+}
+
+/* Background Animation */
+#background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    display: block;
+    list-style: none;
+    background-color: var(--primary);
+    opacity: 0.2;
+    animation: float 20s linear infinite;
+    bottom: -150px;
+    border-radius: 20%;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(720deg);
+        opacity: 0;
     }
 }
