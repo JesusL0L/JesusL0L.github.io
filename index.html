@@ -3,158 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Уголок творчества художницы JesusArtt. Здесь вы найдете ссылки на мои соцсети, правила заказа артов и информацию о доступе в эксклюзивный контент.">
     <title>Уголок художницы JesusArtt</title>
-    <link rel="icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ctext y='.9em' font-size='90'%3e🎨%3c/text%3e%3c/svg%3e">
+    <meta name="description" content="Уголок творчества художницы JesusArtt. Здесь вы найдете ссылки на мои соцсети, правила заказа артов и информацию о доступе в эксклюзивный контент.">
+    <meta name="theme-color" content="#f2957f">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Nunito:wght@400;700&display=swap&subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/@material/web/all.js?module"></script>
 </head>
 <body>
 <div id="background-animation"></div>
 <main class="card">
-    <button type="button" id="theme-switcher" class="theme-switcher" title="Сменить тему" aria-label="Сменить тему">
-        <span class="material-symbols-outlined sun-icon" aria-hidden="true">light_mode</span>
-        <span class="material-symbols-outlined moon-icon" aria-hidden="true">dark_mode</span>
-    </button>
-    <section class="profile-section">
-        <h1>JesusArtt 🐱</h1>
-        <p class="subtitle">Shall we give love to each other by eating fruit ice? 🍒</p>
+    <md-icon-button id="theme-switcher" toggle title="Сменить тему" aria-label="Сменить тему">
+        <md-icon>light_mode</md-icon>
+        <md-icon slot="selected">dark_mode</md-icon>
+    </md-icon-button>
+
+    <section class="profile-section" aria-labelledby="profile-heading">
+        <h1 id="profile-heading">JesusArtt <span role="img" aria-label="cat emoji">🐱</span></h1>
+        <p class="subtitle">Shall we give love to each other by eating fruit ice? <span role="img" aria-label="cherry emoji">🍒</span></p>
     </section>
 
-    <div class="tabs-container">
-        <nav class="tab-list" role="tablist" aria-label="Навигация по разделам">
-            <button type="button" role="tab" aria-selected="true" aria-controls="panel-links" id="tab-links" class="tab-button is-active">Ссылки</button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="panel-exclusive" id="tab-exclusive" class="tab-button">Эксклюзив 18+</button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="panel-rules" id="tab-rules" class="tab-button">Правила</button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="panel-about" id="tab-about" class="tab-button">О себе</button>
-        </nav>
+    <md-tabs id="main-tabs" aria-label="Навигация по разделам">
+        <md-primary-tab id="tab-links" aria-controls="panel-links" active>Ссылки</md-primary-tab>
+        <md-primary-tab id="tab-exclusive" aria-controls="panel-exclusive">Эксклюзив</md-primary-tab>
+        <md-primary-tab id="tab-rules" aria-controls="panel-rules">Правила</md-primary-tab>
+        <md-primary-tab id="tab-about" aria-controls="panel-about">О себе</md-primary-tab>
+    </md-tabs>
 
-        <div class="tab-panels">
-            <div id="panel-links" role="tabpanel" aria-labelledby="tab-links" class="tab-panel is-active">
-                <section class="links-section">
-                    <h2>Основные ссылки</h2>
-                    <div class="links-grid">
-                        <button type="button" class="link-button" id="open-tg-modal-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><path d="M41.4193 7.30899C41.4193 7.30899 45.3046 5.79399 44.9808 9.47328C44.8729 10.9883 43.9016 16.2908 43.1461 22.0262L40.5559 39.0159C40.5559 39.0159 40.3401 41.5048 38.3974 41.9377C36.4547 42.3705 33.5408 40.4227 33.0011 39.9898C32.5694 39.6652 24.9068 34.7955 22.2086 32.4148C21.4531 31.7655 20.5897 30.4669 22.3165 28.9519L33.6487 18.1305C34.9438 16.8319 36.2389 13.8019 30.8426 17.4812L15.7331 27.7616C15.7331 27.7616 14.0063 28.8437 10.7686 27.8698L3.75342 25.7055C3.75342 25.7055 1.16321 24.0823 5.58815 22.459C16.3807 17.3729 29.6555 12.1786 41.4193 7.30899Z"/></svg>
-                            <span>Telegram</span>
-                        </button>
-                        <a href="https://www.tiktok.com/@tonighjjj" target="_blank" rel="noopener noreferrer" class="link-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05,.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/></svg>
-                            <span>TikTok</span>
-                        </a>
-                    </div>
-                </section>
-                <section class="support-section">
-                    <h2>Поддержка</h2>
-                    <p>Нравится мое творчество? Вы можете поддержать меня!</p>
-                    <button type="button" class="link-button" id="support-btn" data-clipboard-text="2202208050560250">
-                        <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
-                        <span>Поддержать (Сбербанк)</span>
-                    </button>
-                </section>
-            </div>
+    <div class="tab-panels">
+        <div id="panel-links" role="tabpanel" aria-labelledby="tab-links" class="tab-panel is-active">
+            <section class="links-section" aria-labelledby="links-heading">
+                <h2 id="links-heading">Основные ссылки</h2>
+                <div class="links-grid">
+                    <md-filled-button id="open-tg-modal-btn">
+                        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true" role="presentation"><path d="M41.4193 7.30899C41.4193 7.30899 45.3046 5.79399 44.9808 9.47328C44.8729 10.9883 43.9016 16.2908 43.1461 22.0262L40.5559 39.0159C40.5559 39.0159 40.3401 41.5048 38.3974 41.9377C36.4547 42.3705 33.5408 40.4227 33.0011 39.9898C32.5694 39.6652 24.9068 34.7955 22.2086 32.4148C21.4531 31.7655 20.5897 30.4669 22.3165 28.9519L33.6487 18.1305C34.9438 16.8319 36.2389 13.8019 30.8426 17.4812L15.7331 27.7616C15.7331 27.7616 14.0063 28.8437 10.7686 27.8698L3.75342 25.7055C3.75342 25.7055 1.16321 24.0823 5.58815 22.459C16.3807 17.3729 29.6555 12.1786 41.4193 7.30899Z"/></svg>
+                        Telegram
+                    </md-filled-button>
+                    <md-filled-button href="https://www.tiktok.com/@tonighjjj" target="_blank" rel="noopener noreferrer">
+                        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true" role="presentation"><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05,.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/></svg>
+                        TikTok
+                    </md-filled-button>
+                </div>
+            </section>
+            <section class="support-section" aria-labelledby="support-heading">
+                <h2 id="support-heading">Поддержка</h2>
+                <p>Нравится мое творчество? Вы можете поддержать меня!</p>
+                <md-filled-tonal-button id="support-btn" data-clipboard-text="2202208050560250">
+                    <md-icon slot="icon">favorite</md-icon>
+                    Поддержать (Сбербанк)
+                </md-filled-tonal-button>
+            </section>
+        </div>
 
-            <div id="panel-exclusive" role="tabpanel" aria-labelledby="tab-exclusive" class="tab-panel" hidden>
-                <section class="content-block">
-                    <div class="exclusive-header">
-                        <h2>Эксклюзивный контент</h2>
-                        <span class="nsfw-badge">18+</span>
-                    </div>
+        <div id="panel-exclusive" role="tabpanel" aria-labelledby="tab-exclusive" class="tab-panel" hidden>
+            <section class="content-block" aria-labelledby="exclusive-heading">
+                <div class="exclusive-header">
+                    <h2 id="exclusive-heading">Эксклюзивный контент</h2>
+                </div>
+                <ol>
+                    <li>Переведите <strong>250+ рублей</strong> по номеру карты. <md-text-button class="copy-btn" data-clipboard-text="2202208050560250"><md-icon slot="icon">content_copy</md-icon>Скопировать</md-text-button></li>
+                    <li>В сообщении к платежу укажите свой <strong>ник в Telegram</strong>.</li>
+                    <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
+                    <li>Подайте заявку на вступление в канал.</li>
+                </ol>
+                <div class="important-note">
+                    <p><strong>Важно:</strong> Минимальная сумма перевода — 250 рублей. Переводы на меньшую сумму не будут приняты и автоматически приведут к отказу в доступе.</p>
+                    <p>В случае, если вы забыли указать ник в сообщении к платежу, отправьте его вместе со скриншотом перевода.</p>
+                    <p>Мы выступаем за приятное и уважительное общение. Проявления агрессии могут стать причиной отказа в предоставлении доступа.</p>
+                </div>
+                <md-filled-button href="https://t.me/+rHPxxmJ0SKRjY2Ri" target="_blank" rel="noopener noreferrer">Подать заявку в Хорни ТГК</md-filled-button>
+            </section>
+        </div>
+
+        <div id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" class="tab-panel" hidden>
+            <section class="content-block" aria-labelledby="rules-heading">
+                <h2 id="rules-heading">Правила заказа артов</h2>
+                <div class="rules-content">
+                    <h3>Свод правил:</h3>
                     <ol>
-                        <li>Переведите <strong>250+ рублей</strong> по номеру карты. <button type="button" class="copy-btn" data-clipboard-text="2202208050560250"><span class="material-symbols-outlined copy-btn-icon">content_copy</span><span>Скопировать</span></button></li>
-                        <li>В сообщении к платежу укажите свой <strong>ник в Telegram</strong>.</li>
-                        <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
-                        <li>Подайте заявку на вступление в канал.</li>
+                        <li>Правила могут и будут меняться.</li>
+                        <li>Предоплата за утвержденный заказчиком скетч должна быть внесена в течение 24 часов. Просрочка оплаты означает автоматический отказ от заказа. Работа начинается исключительно после получения предоплаты.</li>
+                        <li>Художник оставляет за собой право отказаться от дальнейшей работы с заказчиком в любой момент и без объяснения причин, за исключением случая полной или частичной предоплаты заказа. В случае предоплаты обязательства художника сохраняются до завершения работы или достижения соглашения о возврате средств.</li>
+                        <li>Заказчик вправе отменить заказ при наличии уважительной причины с возвратом предоплаты, за вычетом стоимости фактически выполненной работы на момент отмены. В случае грубости или неадекватного поведения со стороны заказчика, предоплата не возвращается.</li>
+                        <li>Каждая правка по инициативе заказчика, не связанная с ошибкой художника, оплачивается отдельно. Стоимость зависит от масштаба изменений. Правки, необходимые из-за недочетов художника, вносятся бесплатно.</li>
                     </ol>
-                    <div class="important-note">
-                        <p><strong>Важно:</strong> Минимальная сумма перевода — 250 рублей. Переводы на меньшую сумму не будут приняты и автоматически приведут к отказу в доступе.</p>
-                        <p>В случае, если вы забыли указать ник в сообщении к платежу, отправьте его вместе со скриншотом перевода.</p>
-                        <p>Мы выступаем за приятное и уважительное общение. Проявления агрессии могут стать причиной отказа в предоставлении доступа.</p>
-                    </div>
-                    <a href="https://t.me/+rHPxxmJ0SKRjY2Ri" target="_blank" rel="noopener noreferrer" class="link-button">Подать заявку в Хорни ТГК</a>
-                </section>
-            </div>
+                    <hr class="divider" role="presentation">
+                    <h3>Правила оформления арта:</h3>
+                    <p>Заказ должен быть расписан максимально подробно и оформлен одним сообщением (без разбивки на части). Описание желательно выстроить в порядке сверху вниз (от головы до ног), включая следующие детали:</p>
+                    <strong>Голова/Лицо:</strong>
+                    <ul>
+                        <li>Цвет волос, прическа (стрижка, укладка)</li>
+                        <li>Форма глаз и их цвет, форма бровей, ресницы</li>
+                        <li>Цвет кожи лица</li>
+                    </ul>
+                    <strong>Тело:</strong>
+                    <ul>
+                        <li>Цвет кожи, рост и телосложение</li>
+                        <li>Размер одежды (примерные параметры)</li>
+                    </ul>
+                    <strong>Дополнительно:</strong>
+                    <ul>
+                        <li>Аксессуары (украшения, очки и т.д.)</li>
+                        <li>Макияж, татуировки, пирсинг</li>
+                    </ul>
+                    <p>Можно скинуть фото-примеры с указанием, что именно должно быть похоже.</p>
+                </div>
+            </section>
+        </div>
 
-            <div id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" class="tab-panel" hidden>
-                <section class="content-block">
-                    <h2>Правила заказа артов</h2>
-                    <div class="rules-content">
-                        <h3>Свод правил:</h3>
-                        <ol>
-                            <li>Правила могут и будут меняться.</li>
-                            <li>Предоплата за утвержденный заказчиком скетч должна быть внесена в течение 24 часов. Просрочка оплаты означает автоматический отказ от заказа. Работа начинается исключительно после получения предоплаты.</li>
-                            <li>Художник оставляет за собой право отказаться от дальнейшей работы с заказчиком в любой момент и без объяснения причин, за исключением случая полной или частичной предоплаты заказа. В случае предоплаты обязательства художника сохраняются до завершения работы или достижения соглашения о возврате средств.</li>
-                            <li>Заказчик вправе отменить заказ при наличии уважительной причины с возвратом предоплаты, за вычетом стоимости фактически выполненной работы на момент отмены. В случае грубости или неадекватного поведения со стороны заказчика, предоплата не возвращается.</li>
-                            <li>Каждая правка по инициативе заказчика, не связанная с ошибкой художника, оплачивается отдельно. Стоимость зависит от масштаба изменений. Правки, необходимые из-за недочетов художника, вносятся бесплатно.</li>
-                        </ol>
-                        <hr class="divider">
-                        <h3>Правила оформления арта:</h3>
-                        <p>Заказ должен быть расписан максимально подробно и оформлен одним сообщением (без разбивки на части). Описание желательно выстроить в порядке сверху вниз (от головы до ног), включая следующие детали:</p>
-                        <strong>Голова/Лицо:</strong>
-                        <ul>
-                            <li>Цвет волос, прическа (стрижка, укладка)</li>
-                            <li>Форма глаз и их цвет, форма бровей, ресницы</li>
-                            <li>Цвет кожи лица</li>
-                        </ul>
-                        <strong>Тело:</strong>
-                        <ul>
-                            <li>Цвет кожи, рост и телосложение</li>
-                            <li>Размер одежды (примерные параметры)</li>
-                        </ul>
-                        <strong>Дополнительно:</strong>
-                        <ul>
-                            <li>Аксессуары (украшения, очки и т.д.)</li>
-                            <li>Макияж, татуировки, пирсинг</li>
-                        </ul>
-                        <p>Можно скинуть фото-примеры с указанием, что именно должно быть похоже.</p>
-                    </div>
-                </section>
-            </div>
-
-            <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="tab-panel" hidden>
-                <section class="content-block">
-                    <h2>О себе</h2>
-                    <div class="about-me-content">
-                        <p>Привет! Меня зовут Джис и я рисую ;P</p>
-                        <p>Начав с обычных карандашей и бумаги, со временем я открыла для себя бесконечные возможности цифрового арта на телефоне. Это позволило мне совершить настоящий рывок в творчестве:</p>
-                        <ul>
-                            <li>Освоила покрас и множество разных кистей.</li>
-                            <li>Нашла себя в этом деле и создала много персонажей, в которых вложила частичку своей души.</li>
-                        </ul>
-                        <p>А самый главный источник моего вдохновения — это мой <a href="https://ineedmypills.github.io/" target="_blank" rel="noopener noreferrer" class="inline-link">любимый мальчик</a>! Он помогает мне развиваться и поддерживает в творческих начинаниях каждый день.</p>
-                        <p>Свои лучшие работы я публикую <a href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="inline-link">в свойм канале</a>, и уверена, что они тебя заинтересуют!</p>
-                        <p>А ещё ты можешь <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link">заказать у меня арт</a>, который я создам специально для тебя с учётом всех пожеланий.</p>
-                    </div>
-                </section>
-            </div>
+        <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="tab-panel" hidden>
+            <section class="content-block" aria-labelledby="about-heading">
+                <h2 id="about-heading">О себе</h2>
+                <div class="about-me-content">
+                    <p>Привет! Меня зовут Джис и я рисую ;P</p>
+                    <p>Начав с обычных карандашей и бумаги, со временем я открыла для себя бесконечные возможности цифрового арта на телефоне. Это позволило мне совершить настоящий рывок в творчестве:</p>
+                    <ul>
+                        <li>Освоила покрас и множество разных кистей.</li>
+                        <li>Нашла себя в этом деле и создала много персонажей, в которых вложила частичку своей души.</li>
+                    </ul>
+                    <p>А самый главный источник моего вдохновения — это мой <a href="https://www.youtube.com/@ClubberryMilkShake" target="_blank" rel="noopener noreferrer" class="inline-link">любимый мальчик</a>! Он помогает мне развиваться и поддерживает в творческих начинаниях каждый день.</p>
+                    <p>Свои лучшие работы я публикую <a href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="inline-link">в своём канале</a>, и уверена, что они тебя заинтересуют!</p>
+                    <p>А ещё ты можешь <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link">заказать у меня арт</a>, который я создам специально для тебя с учётом всех пожеланий.</p>
+                </div>
+            </section>
         </div>
     </div>
 </main>
 
-<div id="tg-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <button type="button" class="modal-close-btn" aria-label="Закрыть меню"><span class="material-symbols-outlined">close</span></button>
-        <h3 id="modal-title" class="modal-title">Выберите канал</h3>
-        <div class="modal-links">
-            <a href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="link-button">
-                <span class="material-symbols-outlined">palette</span>
-                <span>Основной</span>
-            </a>
-            <a href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer" class="link-button">
-                <span class="material-symbols-outlined">forum</span>
-                <span>Щитпост</span>
-            </a>
-            <button type="button" id="horny-tg-redirect" class="link-button">
-                <span>Хорни</span>
-                <span class="nsfw-badge">18+</span>
-            </button>
+<md-dialog id="main-modal">
+    <div slot="headline" id="modal-headline"></div>
+    <form slot="content" id="main-modal-form" method="dialog">
+        <!-- Channel Select View -->
+        <div class="modal-view" data-view="channel-select" hidden>
+            <div class="modal-links">
+                <md-filled-button href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="dialog-button">
+                    <md-icon slot="icon">palette</md-icon>
+                    Основной
+                </md-filled-button>
+                <md-filled-button href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer" class="dialog-button">
+                    <md-icon slot="icon">forum</md-icon>
+                    Щитпост
+                </md-filled-button>
+                <md-filled-tonal-button type="button" data-action="show-age-gate" class="dialog-button">
+                    <md-icon slot="icon">18_up_rating</md-icon>
+                    Хорни
+                </md-filled-tonal-button>
+            </div>
+        </div>
+        <!-- Age Gate View -->
+        <div class="modal-view" data-view="age-gate" hidden>
+            <p>Этот раздел содержит материалы, предназначенные исключительно для совершеннолетних (18+).</p>
+            <p>Нажимая "Продолжить", вы подтверждаете, что вам исполнилось 18 лет и вы осознаете характер контента.</p>
+        </div>
+    </form>
+    <div slot="actions">
+        <!-- Channel Select Actions -->
+        <div class="modal-actions" data-actions="channel-select" hidden>
+            <md-text-button data-action="close">Закрыть</md-text-button>
+        </div>
+        <!-- Age Gate Actions -->
+        <div class="modal-actions" data-actions="age-gate" hidden>
+            <md-text-button data-action="back">Отмена</md-text-button>
+            <md-filled-button data-action="confirm-age" autofocus>Продолжить</md-filled-button>
         </div>
     </div>
-</div>
+</md-dialog>
 
-<script src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>

@@ -1,40 +1,39 @@
-﻿'use strict';
-
-class App {
+﻿class App {
     constructor() {
         this.dom = {
             root: document.documentElement,
+            mainCard: document.querySelector('.card'),
             themeSwitcher: document.getElementById('theme-switcher'),
-            copyButtonsContainer: document.body,
-            tabs: {
-                container: document.querySelector('.tabs-container'),
-                list: document.querySelector('.tab-list'),
-                panels: document.querySelector('.tab-panels'),
-            },
-            telegramModal: {
-                openBtn: document.getElementById('open-tg-modal-btn'),
-                modal: document.getElementById('tg-modal'),
-                closeBtn: document.querySelector('#tg-modal .modal-close-btn'),
-                hornyRedirectBtn: document.getElementById('horny-tg-redirect'),
-                exclusiveTabBtn: document.getElementById('tab-exclusive'),
-            },
+            mainTabs: document.getElementById('main-tabs'),
+            tabPanelsContainer: document.querySelector('.tab-panels'),
+            openTgModalBtn: document.getElementById('open-tg-modal-btn'),
+            exclusiveTabBtn: document.getElementById('tab-exclusive'),
+            backgroundAnimation: document.getElementById('background-animation'),
+            mainModal: document.getElementById('main-modal'),
+            modalHeadline: document.getElementById('modal-headline'),
         };
 
-        this.activeTab = null;
-        this.activePanel = null;
+        this.state = {
+            isThemeSwitching: false,
+            ageGateConfirmed: false,
+            activePanel: null,
+            modalSource: null, // Can be 'telegram' or 'exclusive-tab'
+        };
+
         this.constants = {
             COPY_SUCCESS_DURATION: 2000,
             RESIZE_DEBOUNCE_DELAY: 150,
+            ANIMATION_DURATION: 400,
+            MODAL_CLOSE_DELAY: 100,
         };
 
         this.init();
     }
 
     init() {
-        this.initThemeSwitcher();
-        this.initCopyButtons();
+        this.initTheme();
+        this.initEventListeners();
         this.initTabs();
-        this.initTelegramModal();
         this.initBackgroundAnimation();
     }
 
@@ -42,18 +41,17 @@ class App {
         let timeoutId;
         return (...args) => {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func(...args), delay);
+            timeoutId = setTimeout(() => func.apply(this, args), delay);
         };
     }
 
     initBackgroundAnimation() {
-        const background = document.getElementById('background-animation');
-        if (!background) return;
+        if (!this.dom.backgroundAnimation) return;
         const numShapes = 15;
         const fragment = document.createDocumentFragment();
         for (let i = 0; i < numShapes; i++) {
             const shape = document.createElement('span');
-            shape.classList.add('shape');
+            shape.className = 'shape';
             const size = Math.random() * 40 + 10;
             shape.style.width = `${size}px`;
             shape.style.height = `${size}px`;
@@ -62,163 +60,204 @@ class App {
             shape.style.animationDelay = `${Math.random() * 5}s`;
             fragment.appendChild(shape);
         }
-        background.appendChild(fragment);
+        this.dom.backgroundAnimation.appendChild(fragment);
     }
 
-    initThemeSwitcher() {
+    initTheme() {
         if (!this.dom.themeSwitcher) return;
-
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-
         this.dom.root.classList.toggle('dark-theme', isDark);
-
-        this.dom.themeSwitcher.addEventListener('click', () => {
-            const currentlyDark = this.dom.root.classList.toggle('dark-theme');
-            localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
-        });
+        this.dom.themeSwitcher.selected = isDark;
     }
 
-    initCopyButtons() {
-        this.dom.copyButtonsContainer.addEventListener('click', async (e) => {
-            const button = e.target.closest('[data-clipboard-text]');
-            if (!button || button.disabled) return;
+    initEventListeners() {
+        this.dom.themeSwitcher?.addEventListener('click', () => this.toggleTheme());
+        this.dom.mainTabs?.addEventListener('change', (e) => this.handleTabChange(e));
+        window.addEventListener('resize', App.debounce(() => this.updatePanelsHeight(), this.constants.RESIZE_DEBOUNCE_DELAY));
+        this.dom.mainModal?.addEventListener('closed', () => this.onModalClose());
 
-            const textToCopy = button.dataset.clipboardText;
-            const textSpan = button.querySelector('span:not(.material-symbols-outlined)');
-            const iconElement = button.querySelector('.material-symbols-outlined');
-            const originalText = textSpan?.textContent ?? '';
-            const originalIconHTML = iconElement?.innerHTML ?? '';
+        // Direct listener for Telegram button
+        this.dom.openTgModalBtn?.addEventListener('click', () => {
+            this.state.modalSource = 'telegram';
+            this.showModal('channel-select');
+        });
 
-            try {
-                await navigator.clipboard.writeText(textToCopy);
+        // Delegated listener for modal actions (scoped to the modal)
+        this.dom.mainModal?.addEventListener('click', (e) => {
+            const modalActionButton = e.target.closest('[data-action]');
+            if (modalActionButton) {
+                this.handleModalAction(modalActionButton.dataset.action);
+            }
+        });
 
-                button.disabled = true;
-                button.classList.add('copied');
-                if (textSpan) textSpan.textContent = 'Скопировано!';
-                if (iconElement) iconElement.innerHTML = 'check_circle';
-
-                setTimeout(() => {
-                    button.disabled = false;
-                    button.classList.remove('copied');
-                    if (textSpan) textSpan.textContent = originalText;
-                    if (iconElement) iconElement.innerHTML = originalIconHTML;
-                }, this.constants.COPY_SUCCESS_DURATION);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
+        // Delegated listener for copy buttons (scoped to the document)
+        document.addEventListener('click', (e) => {
+            const copyButton = e.target.closest('[data-clipboard-text]');
+            if (copyButton) {
+                this.handleCopyClick(copyButton);
             }
         });
     }
 
-    initTabs() {
-        if (!this.dom.tabs.container) return;
-
-        this.dom.tabs.list.addEventListener('click', this.handleTabClick.bind(this));
-        window.addEventListener('resize', App.debounce(this.handleResize.bind(this), this.constants.RESIZE_DEBOUNCE_DELAY));
-
-        this.setupInitialTabState();
+    toggleTheme() {
+        if (this.state.isThemeSwitching) return;
+        this.state.isThemeSwitching = true;
+        const isDark = this.dom.root.classList.toggle('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        setTimeout(() => (this.state.isThemeSwitching = false), this.constants.ANIMATION_DURATION);
     }
 
-    setupInitialTabState() {
-        const initialActiveTab = this.dom.tabs.list.querySelector('.is-active');
-        if (!initialActiveTab) return;
-
-        const panelId = initialActiveTab.getAttribute('aria-controls');
-        const initialPanel = this.dom.tabs.panels.querySelector(`#${panelId}`);
-
-        if (initialPanel) {
-            this.activeTab = initialActiveTab;
-            this.activePanel = initialPanel;
-            this.updatePanelsHeight();
+    async handleCopyClick(button) {
+        if (button.disabled) return;
+        const textToCopy = button.dataset.clipboardText;
+        const originalContent = button.innerHTML;
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            button.disabled = true;
+            button.classList.add('copied');
+            button.innerHTML = `<md-icon slot="icon">check_circle</md-icon> Скопировано!`;
+            setTimeout(() => {
+                button.disabled = false;
+                button.classList.remove('copied');
+                button.innerHTML = originalContent;
+            }, this.constants.COPY_SUCCESS_DURATION);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
         }
     }
 
-    handleTabClick(e) {
-        const clickedTab = e.target.closest('.tab-button');
-        if (clickedTab && clickedTab !== this.activeTab) {
-            this.switchTab(clickedTab);
+    initTabs() {
+        if (!this.dom.mainTabs) return;
+        this.dom.exclusiveTabBtn?.addEventListener('click', (e) => this.handleExclusiveTabClick(e), true);
+        this.setupInitialTabState();
+    }
+
+    handleExclusiveTabClick(e) {
+        if (!this.state.ageGateConfirmed) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this.state.modalSource = 'exclusive-tab';
+            this.showModal('age-gate');
+        }
+    }
+
+    handleTabChange(e) {
+        if (e.target.activeTab) this.switchTab(e.target.activeTab);
+    }
+
+    setupInitialTabState() {
+        this.dom.tabPanelsContainer.querySelectorAll('.tab-panel').forEach(p => {
+            p.hidden = true;
+            p.classList.remove('is-active');
+        });
+        const initialActiveTab = this.dom.mainTabs.activeTab;
+        if (!initialActiveTab) return;
+        const panelId = initialActiveTab.getAttribute('aria-controls');
+        const initialPanel = this.dom.tabPanelsContainer.querySelector(`#${panelId}`);
+        if (initialPanel) {
+            initialPanel.hidden = false;
+            initialPanel.classList.add('is-active');
+            this.state.activePanel = initialPanel;
+            this.updatePanelsHeight();
         }
     }
 
     switchTab(newTab) {
         const newPanelId = newTab.getAttribute('aria-controls');
-        const newPanel = this.dom.tabs.panels.querySelector(`#${newPanelId}`);
-        if (!newPanel) return;
+        const newPanel = this.dom.tabPanelsContainer.querySelector(`#${newPanelId}`);
+        if (!newPanel || newPanel === this.state.activePanel) return;
 
-        if (this.activeTab) {
-            this.activeTab.classList.remove('is-active');
-            this.activeTab.setAttribute('aria-selected', 'false');
-        }
-        if (this.activePanel) {
-            this.activePanel.classList.remove('is-active');
-            this.activePanel.hidden = true;
+        if (this.state.activePanel) {
+            this.state.activePanel.classList.remove('is-active');
+            setTimeout(() => {
+                if (this.state.activePanel !== newPanel) {
+                    this.state.activePanel.hidden = true;
+                }
+            }, this.constants.ANIMATION_DURATION);
         }
 
-        newTab.classList.add('is-active');
-        newTab.setAttribute('aria-selected', 'true');
         newPanel.hidden = false;
+        this.state.activePanel = newPanel;
+        this.updatePanelsHeight();
 
-        requestAnimationFrame(() => {
-            this.dom.tabs.panels.style.height = `${newPanel.scrollHeight}px`;
-            newPanel.classList.add('is-active');
-        });
-
-        this.activeTab = newTab;
-        this.activePanel = newPanel;
-
-        if (this.dom.tabs.list.getBoundingClientRect().top < 0) {
-            this.dom.tabs.list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (this.dom.mainTabs.getBoundingClientRect().top < 0) {
+            this.dom.mainTabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
 
     updatePanelsHeight() {
-        if (!this.dom.tabs.panels || !this.activePanel) return;
+        if (!this.dom.tabPanelsContainer || !this.state.activePanel) return;
         requestAnimationFrame(() => {
-            this.dom.tabs.panels.style.height = `${this.activePanel.scrollHeight}px`;
+            const panelHeight = this.state.activePanel.scrollHeight;
+            this.dom.tabPanelsContainer.style.height = `${panelHeight}px`;
+            this.state.activePanel.classList.add('is-active');
         });
     }
 
-    handleResize() {
-        this.updatePanelsHeight();
+    handleModalAction(action) {
+        switch (action) {
+            case 'show-age-gate':
+                if (this.state.ageGateConfirmed) {
+                    this.state.modalSource = 'exclusive-tab';
+                    this.dom.mainModal.close('age-confirmed');
+                } else {
+                    this.state.modalSource = 'exclusive-tab';
+                    this.showModal('age-gate');
+                }
+                break;
+            case 'confirm-age':
+                this.state.ageGateConfirmed = true;
+                if (this.state.modalSource === 'exclusive-tab') {
+                    this.dom.mainModal.close('age-confirmed');
+                } else { // Assumes telegram source
+                    window.open('https://t.me/+rHPxxmJ0SKRjY2Ri', '_blank', 'noopener,noreferrer');
+                    this.dom.mainModal.close();
+                }
+                break;
+            case 'back': // From age-gate
+                this.showModal('channel-select');
+                break;
+            case 'close': // From channel-select
+                this.dom.mainModal.close();
+                break;
+        }
     }
 
-    initTelegramModal() {
-        const { openBtn, modal, closeBtn, hornyRedirectBtn, exclusiveTabBtn } = this.dom.telegramModal;
-        if (!openBtn || !modal || !closeBtn) return;
+    showModal(viewName) {
+        const { mainModal, modalHeadline, mainCard } = this.dom;
 
-        const showModal = () => {
-            modal.classList.add('is-visible');
-            modal.setAttribute('aria-hidden', 'false');
-            document.addEventListener('keydown', handleModalKeydown);
-            closeBtn.focus();
+        const headText = {
+            'channel-select': 'Выберите канал',
+            'age-gate': 'Подтверждение возраста'
         };
+        modalHeadline.textContent = headText[viewName] || '';
 
-        const hideModal = () => {
-            modal.classList.remove('is-visible');
-            modal.setAttribute('aria-hidden', 'true');
-            document.removeEventListener('keydown', handleModalKeydown);
-            openBtn.focus();
-        };
+        mainModal.querySelectorAll('.modal-view, .modal-actions').forEach(el => el.hidden = true);
 
-        const handleModalKeydown = (e) => {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                hideModal();
-            }
-        };
+        const viewToShow = mainModal.querySelector(`.modal-view[data-view="${viewName}"]`);
+        const actionsToShow = mainModal.querySelector(`.modal-actions[data-actions="${viewName}"]`);
 
-        openBtn.addEventListener('click', showModal);
-        closeBtn.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) hideModal();
-        });
+        if (viewToShow) viewToShow.hidden = false;
+        if (actionsToShow) actionsToShow.hidden = false;
 
-        hornyRedirectBtn?.addEventListener('click', () => {
-            hideModal();
-            exclusiveTabBtn?.click();
-            exclusiveTabBtn?.focus();
-        });
+        if (!mainModal.open) {
+            mainModal.show();
+            mainCard.classList.add('blurred');
+        }
+    }
+
+    onModalClose() {
+        this.dom.mainCard.classList.remove('blurred');
+
+        if (this.dom.mainModal.returnValue === 'age-confirmed' && this.state.modalSource === 'exclusive-tab') {
+            setTimeout(() => {
+                this.dom.exclusiveTabBtn.click();
+            }, this.constants.MODAL_CLOSE_DELAY);
+        }
+
+        this.state.modalSource = null;
     }
 }
 
