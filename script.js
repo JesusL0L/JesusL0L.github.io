@@ -9,22 +9,27 @@
             openTgModalBtn: document.getElementById('open-tg-modal-btn'),
             exclusiveTabBtn: document.getElementById('tab-exclusive'),
             backgroundAnimation: document.getElementById('background-animation'),
-            mainModal: document.getElementById('main-modal'),
-            modalHeadline: document.getElementById('modal-headline'),
+            // New Modal Elements
+            modalBackdrop: document.getElementById('modal-backdrop'),
+            modalContainer: document.getElementById('modal-container'),
+            modalTitle: document.getElementById('modal-title'),
+            modalContent: document.getElementById('modal-content'),
+            modalActions: document.getElementById('modal-actions'),
         };
 
         this.state = {
             isThemeSwitching: false,
             ageGateConfirmed: false,
             activePanel: null,
-            modalSource: null, // Can be 'telegram' or 'exclusive-tab'
+            isModalOpen: false,
+            currentModalView: null,
         };
 
         this.constants = {
             COPY_SUCCESS_DURATION: 2000,
             RESIZE_DEBOUNCE_DELAY: 150,
-            ANIMATION_DURATION: 400,
-            MODAL_CLOSE_DELAY: 100,
+            TABS_ANIMATION_DURATION: 400,
+            MODAL_ANIMATION_DURATION: 250, // Single duration for modal animations
         };
 
         this.init();
@@ -32,9 +37,15 @@
 
     init() {
         this.initTheme();
+        this.loadPersistentState();
         this.initEventListeners();
         this.initTabs();
         this.initBackgroundAnimation();
+        this.initModalViews();
+    }
+
+    loadPersistentState() {
+        this.state.ageGateConfirmed = localStorage.getItem('ageGateConfirmed') === 'true';
     }
 
     static debounce(func, delay) {
@@ -46,7 +57,7 @@
     }
 
     initBackgroundAnimation() {
-        if (!this.dom.backgroundAnimation) return;
+        if (!this.dom.backgroundAnimation || this.dom.backgroundAnimation.children.length > 0) return;
         const numShapes = 15;
         const fragment = document.createDocumentFragment();
         for (let i = 0; i < numShapes; i++) {
@@ -76,28 +87,15 @@
         this.dom.themeSwitcher?.addEventListener('click', () => this.toggleTheme());
         this.dom.mainTabs?.addEventListener('change', (e) => this.handleTabChange(e));
         window.addEventListener('resize', App.debounce(() => this.updatePanelsHeight(), this.constants.RESIZE_DEBOUNCE_DELAY));
-        this.dom.mainModal?.addEventListener('closed', () => this.onModalClose());
 
-        // Direct listener for Telegram button
-        this.dom.openTgModalBtn?.addEventListener('click', () => {
-            this.state.modalSource = 'telegram';
-            this.showModal('channel-select');
-        });
+        // Modal related listeners
+        this.dom.openTgModalBtn?.addEventListener('click', () => this.openModal('channel-select'));
+        this.dom.modalContainer?.addEventListener('click', (e) => this.handleModalAction(e));
+        this.dom.modalBackdrop?.addEventListener('click', () => this.closeModal());
 
-        // Delegated listener for modal actions (scoped to the modal)
-        this.dom.mainModal?.addEventListener('click', (e) => {
-            const modalActionButton = e.target.closest('[data-action]');
-            if (modalActionButton) {
-                this.handleModalAction(modalActionButton.dataset.action);
-            }
-        });
-
-        // Delegated listener for copy buttons (scoped to the document)
         document.addEventListener('click', (e) => {
             const copyButton = e.target.closest('[data-clipboard-text]');
-            if (copyButton) {
-                this.handleCopyClick(copyButton);
-            }
+            if (copyButton) this.handleCopyClick(copyButton);
         });
     }
 
@@ -106,7 +104,7 @@
         this.state.isThemeSwitching = true;
         const isDark = this.dom.root.classList.toggle('dark-theme');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        setTimeout(() => (this.state.isThemeSwitching = false), this.constants.ANIMATION_DURATION);
+        setTimeout(() => (this.state.isThemeSwitching = false), this.constants.TABS_ANIMATION_DURATION);
     }
 
     async handleCopyClick(button) {
@@ -138,8 +136,7 @@
         if (!this.state.ageGateConfirmed) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            this.state.modalSource = 'exclusive-tab';
-            this.showModal('age-gate');
+            this.openModal('age-gate');
         }
     }
 
@@ -169,13 +166,13 @@
         const newPanel = this.dom.tabPanelsContainer.querySelector(`#${newPanelId}`);
         if (!newPanel || newPanel === this.state.activePanel) return;
 
-        if (this.state.activePanel) {
-            this.state.activePanel.classList.remove('is-active');
+        const oldPanel = this.state.activePanel;
+
+        if (oldPanel) {
+            oldPanel.classList.remove('is-active');
             setTimeout(() => {
-                if (this.state.activePanel !== newPanel) {
-                    this.state.activePanel.hidden = true;
-                }
-            }, this.constants.ANIMATION_DURATION);
+                if (this.state.activePanel !== oldPanel) oldPanel.hidden = true;
+            }, this.constants.TABS_ANIMATION_DURATION);
         }
 
         newPanel.hidden = false;
@@ -196,68 +193,140 @@
         });
     }
 
-    handleModalAction(action) {
+    // --- NEW MODAL LOGIC --- //
+
+    initModalViews() {
+        this.modalViews = {
+            'channel-select': {
+                title: 'Выберите канал',
+                content: () => `
+                    <div class="links-grid">
+                        <md-filled-button href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer">
+                            <md-icon slot="icon">palette</md-icon> Основной
+                        </md-filled-button>
+                        <md-filled-button href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer">
+                            <md-icon slot="icon">forum</md-icon> Щитпост
+                        </md-filled-button>
+                        <md-filled-tonal-button data-action="show-age-gate">
+                            <md-icon slot="icon">18_up_rating</md-icon> Хорни
+                        </md-filled-tonal-button>
+                    </div>`,
+                actions: () => `<md-text-button data-action="close">Закрыть</md-text-button>`
+            },
+            'age-gate': {
+                title: 'Подтверждение возраста',
+                content: () => `
+                    <p>Этот раздел содержит материалы, предназначенные исключительно для совершеннолетних (18+).</p>
+                    <p>Нажимая "Продолжить", вы подтверждаете, что вам исполнилось 18 лет и вы осознаете характер контента.</p>`,
+                actions: (source) => `
+                    <md-text-button data-action="back">${source === 'exclusive-tab' ? 'Закрыть' : 'Назад'}</md-text-button>
+                    <md-filled-button data-action="confirm-age" autofocus>Продолжить</md-filled-button>`
+            }
+        };
+    }
+
+    handleModalAction(e) {
+        const button = e.target.closest('[data-action]');
+        if (!button) return;
+
+        const action = button.dataset.action;
+
         switch (action) {
+            case 'close':
+                this.closeModal();
+                break;
             case 'show-age-gate':
                 if (this.state.ageGateConfirmed) {
-                    this.state.modalSource = 'exclusive-tab';
-                    this.dom.mainModal.close('age-confirmed');
+                    this.closeModal(() => {
+                        setTimeout(() => this.dom.exclusiveTabBtn.click(), 50);
+                    });
                 } else {
-                    this.state.modalSource = 'exclusive-tab';
-                    this.showModal('age-gate');
+                    this.updateModal('age-gate');
+                }
+                break;
+            case 'back':
+                if (this.state.modalSource === 'exclusive-tab') {
+                    this.closeModal();
+                } else {
+                    this.updateModal('channel-select');
                 }
                 break;
             case 'confirm-age':
                 this.state.ageGateConfirmed = true;
-                if (this.state.modalSource === 'exclusive-tab') {
-                    this.dom.mainModal.close('age-confirmed');
-                } else { // Assumes telegram source
-                    window.open('https://t.me/+rHPxxmJ0SKRjY2Ri', '_blank', 'noopener,noreferrer');
-                    this.dom.mainModal.close();
-                }
-                break;
-            case 'back': // From age-gate
-                this.showModal('channel-select');
-                break;
-            case 'close': // From channel-select
-                this.dom.mainModal.close();
+                localStorage.setItem('ageGateConfirmed', 'true');
+                this.closeModal(() => {
+                    // Use a timeout to ensure the tab click happens after the modal is gone
+                    setTimeout(() => this.dom.exclusiveTabBtn.click(), 50);
+                });
                 break;
         }
     }
 
-    showModal(viewName) {
-        const { mainModal, modalHeadline, mainCard } = this.dom;
+    openModal(viewName) {
+        if (this.state.isModalOpen) return;
+        this.state.isModalOpen = true;
+        this.state.modalSource = viewName === 'age-gate' ? 'exclusive-tab' : 'telegram-btn';
 
-        const headText = {
-            'channel-select': 'Выберите канал',
-            'age-gate': 'Подтверждение возраста'
-        };
-        modalHeadline.textContent = headText[viewName] || '';
+        this.dom.modalBackdrop.hidden = false;
+        this.dom.modalContainer.hidden = false;
 
-        mainModal.querySelectorAll('.modal-view, .modal-actions').forEach(el => el.hidden = true);
+        document.body.style.overflow = 'hidden';
+        this.dom.mainCard.classList.add('blurred');
 
-        const viewToShow = mainModal.querySelector(`.modal-view[data-view="${viewName}"]`);
-        const actionsToShow = mainModal.querySelector(`.modal-actions[data-actions="${viewName}"]`);
-
-        if (viewToShow) viewToShow.hidden = false;
-        if (actionsToShow) actionsToShow.hidden = false;
-
-        if (!mainModal.open) {
-            mainModal.show();
-            mainCard.classList.add('blurred');
-        }
+        requestAnimationFrame(() => {
+            this.dom.modalBackdrop.classList.add('is-visible');
+            this.dom.modalContainer.classList.add('is-visible');
+            this.updateModal(viewName, false);
+        });
     }
 
-    onModalClose() {
+    closeModal(callback) {
+        if (!this.state.isModalOpen) return;
+        this.state.isModalOpen = false;
+
+        this.dom.modalBackdrop.classList.remove('is-visible');
+        this.dom.modalContainer.classList.remove('is-visible');
+
         this.dom.mainCard.classList.remove('blurred');
+        document.body.style.overflow = '';
 
-        if (this.dom.mainModal.returnValue === 'age-confirmed' && this.state.modalSource === 'exclusive-tab') {
-            setTimeout(() => {
-                this.dom.exclusiveTabBtn.click();
-            }, this.constants.MODAL_CLOSE_DELAY);
+        setTimeout(() => {
+            this.dom.modalBackdrop.hidden = true;
+            this.dom.modalContainer.hidden = true;
+            this.dom.modalContent.innerHTML = ''; // Clear content after hiding
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }, this.constants.MODAL_ANIMATION_DURATION);
+    }
+
+    async updateModal(viewName, animate = true) {
+        const view = this.modalViews[viewName];
+        if (!view) return;
+
+        this.state.currentModalView = viewName;
+        const oldContent = this.dom.modalContent.querySelector('.modal-view');
+
+        if (oldContent && animate) {
+            oldContent.classList.add('is-hiding');
+            await new Promise(resolve => setTimeout(resolve, 150));
         }
 
-        this.state.modalSource = null;
+        this.dom.modalTitle.textContent = view.title;
+        this.dom.modalContent.innerHTML = `<div class="modal-view">${view.content(this.state.modalSource)}</div>`;
+        this.dom.modalActions.innerHTML = view.actions(this.state.modalSource);
+
+        const newContent = this.dom.modalContent.querySelector('.modal-view');
+
+        // Wait for new web components to be ready
+        const components = this.dom.modalContainer.querySelectorAll('md-filled-button, md-filled-tonal-button, md-text-button');
+        await Promise.all(Array.from(components).map(c => c.updateComplete));
+
+        requestAnimationFrame(() => {
+            const newHeight = newContent.scrollHeight;
+            this.dom.modalContent.style.height = `${newHeight}px`;
+            newContent.classList.add('is-active');
+        });
     }
 }
 

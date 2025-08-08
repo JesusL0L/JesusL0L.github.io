@@ -11,10 +11,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Nunito:wght@400;700&display=swap&subset=cyrillic" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="https://unpkg.com/@material/web/all.js?module"></script>
 </head>
 <body>
 <div id="background-animation"></div>
@@ -69,7 +69,7 @@
                 <ol>
                     <li>Переведите <strong>250+ рублей</strong> по номеру карты. <md-text-button class="copy-btn" data-clipboard-text="2202208050560250"><md-icon slot="icon">content_copy</md-icon>Скопировать</md-text-button></li>
                     <li>В сообщении к платежу укажите свой <strong>ник в Telegram</strong>.</li>
-                    <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
+                    <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
                     <li>Подайте заявку на вступление в канал.</li>
                 </ol>
                 <div class="important-note">
@@ -136,45 +136,23 @@
     </div>
 </main>
 
-<md-dialog id="main-modal">
-    <div slot="headline" id="modal-headline"></div>
-    <form slot="content" id="main-modal-form" method="dialog">
-        <!-- Channel Select View -->
-        <div class="modal-view" data-view="channel-select" hidden>
-            <div class="modal-links">
-                <md-filled-button href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer" class="dialog-button">
-                    <md-icon slot="icon">palette</md-icon>
-                    Основной
-                </md-filled-button>
-                <md-filled-button href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer" class="dialog-button">
-                    <md-icon slot="icon">forum</md-icon>
-                    Щитпост
-                </md-filled-button>
-                <md-filled-tonal-button type="button" data-action="show-age-gate" class="dialog-button">
-                    <md-icon slot="icon">18_up_rating</md-icon>
-                    Хорни
-                </md-filled-tonal-button>
-            </div>
-        </div>
-        <!-- Age Gate View -->
-        <div class="modal-view" data-view="age-gate" hidden>
-            <p>Этот раздел содержит материалы, предназначенные исключительно для совершеннолетних (18+).</p>
-            <p>Нажимая "Продолжить", вы подтверждаете, что вам исполнилось 18 лет и вы осознаете характер контента.</p>
-        </div>
-    </form>
-    <div slot="actions">
-        <!-- Channel Select Actions -->
-        <div class="modal-actions" data-actions="channel-select" hidden>
-            <md-text-button data-action="close">Закрыть</md-text-button>
-        </div>
-        <!-- Age Gate Actions -->
-        <div class="modal-actions" data-actions="age-gate" hidden>
-            <md-text-button data-action="back">Отмена</md-text-button>
-            <md-filled-button data-action="confirm-age" autofocus>Продолжить</md-filled-button>
-        </div>
-    </div>
-</md-dialog>
+<div id="modal-backdrop" class="modal-backdrop" hidden></div>
+<div id="modal-container" class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <h2 id="modal-title" class="modal-title"></h2>
+    <div id="modal-content" class="modal-content"></div>
+    <div id="modal-actions" class="modal-actions"></div>
+</div>
 
+<script type="module">
+    import 'https://unpkg.com/@material/web/button/filled-button.js?module';
+    import 'https://unpkg.com/@material/web/button/filled-tonal-button.js?module';
+    import 'https://unpkg.com/@material/web/button/text-button.js?module';
+    import 'https://unpkg.com/@material/web/dialog/dialog.js?module';
+    import 'https://unpkg.com/@material/web/icon/icon.js?module';
+    import 'https://unpkg.com/@material/web/iconbutton/icon-button.js?module';
+    import 'https://unpkg.com/@material/web/tabs/primary-tab.js?module';
+    import 'https://unpkg.com/@material/web/tabs/tabs.js?module';
+</script>
 <script type="module" src="script.js"></script>
 </body>
 </html>
