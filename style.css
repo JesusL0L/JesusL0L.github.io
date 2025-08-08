@@ -105,6 +105,11 @@ body {
     transition: color var(--md-sys-motion-duration-long), background-color var(--md-sys-motion-duration-long);
 }
 
+body[data-loading="true"] .card {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
 #background-animation {
     position: fixed;
     top: 0;
@@ -158,9 +163,8 @@ body {
     background-color: var(--md-sys-color-surface-container-low);
     border-radius: var(--md-sys-shape-corner-extra-large);
     text-align: center;
-    transition: background-color var(--md-sys-motion-duration-medium), box-shadow var(--md-sys-motion-duration-medium), filter var(--md-sys-motion-duration-medium);
+    transition: opacity 500ms ease-in-out, transform 500ms ease-in-out, background-color var(--md-sys-motion-duration-medium), box-shadow var(--md-sys-motion-duration-medium), filter var(--md-sys-motion-duration-medium);
     box-shadow: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
-    animation: fade-in-up var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-emphasized);
 }
 
 .card.blurred {

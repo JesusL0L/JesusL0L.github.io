@@ -8,6 +8,7 @@
 
 const DOM = {
     root: document.documentElement,
+    body: document.body,
     mainCard: document.querySelector('.card'),
     themeSwitcher: document.getElementById('theme-switcher'),
     mainTabs: document.getElementById('main-tabs'),
@@ -161,7 +162,7 @@ const ModalManager = {
 
         DOM.modalBackdrop.hidden = false;
         DOM.modalContainer.hidden = false;
-        document.body.style.overflow = 'hidden';
+        DOM.body.style.overflow = 'hidden';
         DOM.mainCard.classList.add('blurred');
 
         requestAnimationFrame(() => {
@@ -178,7 +179,7 @@ const ModalManager = {
         DOM.modalBackdrop.classList.remove('is-visible');
         DOM.modalContainer.classList.remove('is-visible');
         DOM.mainCard.classList.remove('blurred');
-        document.body.style.overflow = '';
+        DOM.body.style.overflow = '';
 
         setTimeout(() => {
             DOM.modalBackdrop.hidden = true;
@@ -284,9 +285,32 @@ const TabsManager = {
     },
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    ThemeManager.init();
-    UIManager.init();
-    TabsManager.init();
-    ModalManager.init();
-});
+async function initializeApp() {
+    const componentsToWaitFor = [
+        'md-icon-button',
+        'md-icon',
+        'md-tabs',
+        'md-primary-tab',
+        'md-filled-button',
+        'md-filled-tonal-button',
+        'md-text-button',
+        'md-dialog'
+    ];
+
+    try {
+        await Promise.all(componentsToWaitFor.map(tag => customElements.whenDefined(tag)));
+
+        ThemeManager.init();
+        UIManager.init();
+        TabsManager.init();
+        ModalManager.init();
+
+        DOM.body.removeAttribute('data-loading');
+
+    } catch (error) {
+        console.error('Failed to initialize Material Web Components:', error);
+        DOM.body.removeAttribute('data-loading');
+    }
+}
+
+initializeApp();
