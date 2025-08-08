@@ -49,10 +49,6 @@
 }
 
 html.dark-theme {
-    --scrollbar-thumb-color: var(--md-sys-color-primary-container);
-    --scrollbar-thumb-hover-color: var(--md-sys-color-primary);
-    --scrollbar-background-color: var(--md-sys-color-surface-container);
-
     --md-sys-color-primary: #FFB4A3;
     --md-sys-color-on-primary: #561F12;
     --md-sys-color-primary-container: #723426;

@@ -54,7 +54,7 @@
             <section class="support-section" aria-labelledby="support-heading">
                 <h2 id="support-heading">Поддержка</h2>
                 <p>Нравится мое творчество? Вы можете поддержать меня!</p>
-                <md-filled-tonal-button id="support-btn" data-clipboard-text="2202208050560250">
+                <md-filled-tonal-button data-clipboard-text="2202208050560250">
                     <md-icon slot="icon">favorite</md-icon>
                     Поддержать (Сбербанк)
                 </md-filled-tonal-button>
@@ -69,7 +69,7 @@
                 <ol>
                     <li>Переведите <strong>250+ рублей</strong> по номеру карты. <md-text-button class="copy-btn" data-clipboard-text="2202208050560250"><md-icon slot="icon">content_copy</md-icon>Скопировать</md-text-button></li>
                     <li>В сообщении к платежу укажите свой <strong>ник в Telegram</strong>.</li>
-                    <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
+                    <li>Отправьте скриншот перевода <a href="https://t.me/JesusL0L" target="_blank" rel="noopener noreferrer" class="inline-link"><strong>@JesusL0L</strong></a>.</li>
                     <li>Подайте заявку на вступление в канал.</li>
                 </ol>
                 <div class="important-note">
@@ -142,6 +142,27 @@
     <div id="modal-content" class="modal-content"></div>
     <div id="modal-actions" class="modal-actions"></div>
 </div>
+
+<!-- Modal Templates -->
+<template id="modal-template-channel-select">
+    <div class="links-grid">
+        <md-filled-button href="https://t.me/JesusArtt" target="_blank" rel="noopener noreferrer">
+            <md-icon slot="icon">palette</md-icon> Основной
+        </md-filled-button>
+        <md-filled-button href="https://t.me/+i1Mw5vUIu5RlZmE6" target="_blank" rel="noopener noreferrer">
+            <md-icon slot="icon">forum</md-icon> Щитпост
+        </md-filled-button>
+        <md-filled-tonal-button data-action="show-age-gate">
+            <md-icon slot="icon">18_up_rating</md-icon> Хорни
+        </md-filled-tonal-button>
+    </div>
+</template>
+
+<template id="modal-template-age-gate">
+    <p>Этот раздел содержит материалы, предназначенные исключительно для совершеннолетних (18+).</p>
+    <p>Нажимая "Продолжить", вы подтверждаете, что вам исполнилось 18 лет и вы осознаете характер контента.</p>
+</template>
+
 
 <script type="module">
     import 'https://unpkg.com/@material/web/button/filled-button.js?module';
