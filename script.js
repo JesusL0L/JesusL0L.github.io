@@ -27,7 +27,7 @@ const CONSTANTS = {
     COPY_SUCCESS_DURATION: 2000,
     RESIZE_DEBOUNCE_DELAY: 150,
     TABS_ANIMATION_DURATION: 400,
-    MODAL_ANIMATION_DURATION: 250,
+    MODAL_ANIMATION_DURATION: 400,
 };
 
 const Utils = {
@@ -160,8 +160,6 @@ const ModalManager = {
         AppState.isModalOpen = true;
         AppState.modalSource = viewName === 'age-gate' ? 'exclusive-tab' : 'telegram-btn';
 
-        DOM.modalBackdrop.hidden = false;
-        DOM.modalContainer.hidden = false;
         DOM.body.style.overflow = 'hidden';
         DOM.mainCard.classList.add('blurred');
 
@@ -179,11 +177,9 @@ const ModalManager = {
         DOM.modalBackdrop.classList.remove('is-visible');
         DOM.modalContainer.classList.remove('is-visible');
         DOM.mainCard.classList.remove('blurred');
-        DOM.body.style.overflow = '';
 
         setTimeout(() => {
-            DOM.modalBackdrop.hidden = true;
-            DOM.modalContainer.hidden = true;
+            DOM.body.style.overflow = '';
             DOM.modalContent.innerHTML = '';
             if (typeof callback === 'function') callback();
         }, CONSTANTS.MODAL_ANIMATION_DURATION);
@@ -305,11 +301,8 @@ async function initializeApp() {
         TabsManager.init();
         ModalManager.init();
 
-        DOM.body.removeAttribute('data-loading');
-
     } catch (error) {
         console.error('Failed to initialize Material Web Components:', error);
-        DOM.body.removeAttribute('data-loading');
     }
 }
 
