@@ -1,0 +1,17 @@
+﻿export const DOM = {
+    root: document.documentElement,
+    body: document.body,
+    mainCard: document.querySelector('.card'),
+    themeSwitcher: document.getElementById('theme-switcher'),
+    mainTabs: document.getElementById('main-tabs'),
+    tabPanelsContainer: document.querySelector('.tab-panels'),
+    openTgModalBtn: document.getElementById('open-tg-modal-btn'),
+    exclusiveTabBtn: document.getElementById('tab-exclusive'),
+    artsTab: document.getElementById('tab-arts'),
+    backgroundAnimation: document.getElementById('background-animation'),
+    modalBackdrop: document.getElementById('modal-backdrop'),
+    modalContainer: document.getElementById('modal-container'),
+    modalTitle: document.getElementById('modal-title'),
+    modalContent: document.getElementById('modal-content'),
+    modalActions: document.getElementById('modal-actions'),
+};
